@@ -188,4 +188,89 @@ class SortedListTests extends AnyFlatSpec {
       current = current.get.next
     }
   }
+
+  it should "be a  findrefbefore" in {
+    val list = new SortedList[Int]()
+    list.insert(1)
+    assert(list.insert(1)==list.getRef(0))
+    list.insert(1)
+    assert(list.getRef(0).count==2)
+    list.insert(2)
+    list.insert(30)
+    list.insert(31)
+    assert(list.getRef(1).prev==list.headNode)
+
+
+    assert(list.findRefBefore(30)== list.findRef(2) )
+
+    assert(list.findRefBefore(34)== list.findRef(3) )
+    assert(list.findRefBefore(10)== list.findRef(1) )
+
+    assert(list.findRefBefore(0).get.value!= 2)
+  }
+
+  it should "be a  findref" in {
+    val list = new SortedList[Int]()
+    list.insert(1)
+    list.insert(2)
+    list.insert(30)
+    list.insert(31)
+   assert(list.findRef(2).get.value==2)
+  }
+
+  it should "be a  getref" in {
+    val list = new SortedList[Int]()
+    list.insert(1)
+    list.insert(2)
+    list.insert(30)
+    list.insert(31)
+    assert(list.getRef(0).value==1)
+    assert(list.getRef(0).next.get.value==2)
+  }
+
+  it should "be a  apply" in {
+    val list = new SortedList[Int]()
+    list.insert(1)
+    list.insert(2)
+    list.insert(30)
+    list.insert(31)
+  assert(list.apply(1)==2)
+  }
+
+  it should "be a  remove" in {
+    val list = new SortedList[Int]()
+    list.insert(1)
+    list.insert(2)
+    list.insert(30)
+    list.insert(31)
+
+    assert(list.remove(list.getRef(0))==list(0))
+
+    val list2 = new SortedList[Int]()
+    list2.insert(1)
+    list2.insert(2)
+    list2.insert(30)
+    list2.insert(30)
+    list2.insert(31)
+
+    list2.removeN(list2.getRef(2),2)
+    assert(list2(2)==31)
+    list2.remove(list2.getRef(0))
+
+    assert(list2(0)==2)
+
+
+    val list3 = new SortedList[Int]()
+    list3.insert(1)
+    list3.insert(2)
+    list3.insert(30)
+    list3.insert(30)
+    list3.insert(31)
+
+    list3.removeAll(list3.getRef(2))
+    assert(list3(2)==31)
+
+  }
+
+
 }
