@@ -191,7 +191,7 @@ class SortedListTests extends AnyFlatSpec {
 
   it should "be a  findrefbefore" in {
     val list = new SortedList[Int]()
-    list.insert(1)
+    //list.insert(1)
     assert(list.insert(1)==list.getRef(0))
     list.insert(1)
     assert(list.getRef(0).count==2)

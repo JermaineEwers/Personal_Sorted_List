@@ -14,6 +14,7 @@ package cse250.pa2
 
 import scala.collection.mutable
 
+
 /**
  * A linked list that stores its elements in sorted order.  
  * 
@@ -67,7 +68,34 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def findRefBefore(elem: T): Option[SortedListNode[T]] =
   {
-    ???
+    var t=headNode
+    var len:Int=length
+    var num: Int = 0
+    var ch=0
+    while(num<=len){
+    if(t.get.next.get.value==elem){
+      ch=ch+1
+      return t.get.next
+    }
+      t=t.get.next
+      num+=1
+    }
+
+    if(ch==0){
+      while (num <= len) {
+        if (compare(elem, t.get.value)>0 ) {
+          return t
+        }
+        t = t.get.next
+        num += 1
+      }
+    }
+
+
+
+return None
+
+
   }
 
   /**
@@ -90,7 +118,31 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def findRefBefore(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] =
   {
-    ???
+    var t = hint.prev.get.next
+    var len: Int = length
+    var num: Int = 0
+    var ch = 0
+    while (num <= len) {
+      if (t.get.next.get.value == elem) {
+        ch = ch + 1
+        return t.get.next
+      }
+      t = t.get.next
+      num += 1
+    }
+
+    if (ch == 0) {
+      while (num <= len) {
+        if (compare(elem, t.get.value) > 0) {
+          return t
+        }
+        t = t.get.next
+        num += 1
+      }
+    }
+
+
+    return None
   }
 
   /**
@@ -105,7 +157,20 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def findRef(elem: T): Option[SortedListNode[T]] =
   {
-    ???
+    var t = headNode
+    var len: Int = length
+    var num: Int = 0
+    var ch = 0
+    while (num <= len) {
+      if (t.get.next.get.value == elem) {
+        ch = ch + 1
+        return t.get.next
+      }
+      t = t.get.next
+      num += 1
+    }
+
+    return None
   }
 
   /**
@@ -119,7 +184,20 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def findRef(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] =
   {
-    ???
+    var t = hint.prev.get.next
+    var len: Int = length
+    var num: Int = 0
+    var ch = 0
+    while (num <= len) {
+      if (t.get.next.get.value == elem) {
+        ch = ch + 1
+        return t.get.next
+      }
+      t = t.get.next
+      num += 1
+    }
+
+    return None
   }
 
   /**
@@ -136,7 +214,27 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def getRef(idx: Int): SortedListNode[T] =
   {
-    ???
+   /* if(idx<0 || idx>=length){
+     throw IndexOutOfBoundsException
+
+    }*/
+   var ret: SortedListNode[T]= headNode.get
+    var t = headNode
+
+    var len: Int = idx
+    var num: Int = 0
+    var ch = 0
+    while (num <= len) {
+      if (num == len) {
+
+        ret =t.get
+        return t.get
+      }
+      t = t.get.next
+      num += 1
+    }
+
+    ret
   }
 
   /**
@@ -150,7 +248,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def apply(idx: Int): T =
   {
-    ???
+    getRef(idx).value
   }
 
   /**
@@ -173,8 +271,87 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def insert(elem: T): SortedListNode[T] =
   {
-    ???
+    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 0, None, None))
+    //(elem, 0, None, None)
+
+    if(headNode!=None) {
+
+   var t=headNode
+
+
+  var t2 = headNode.get
+  var len: Int = length+1
+  var num: Int = 0
+  var num2: Int = 0
+  var ch = 0
+  var ch2 = 0
+
+  while (num2 < len) {
+    if (t2.value == elem) {
+      ch2 += 1
+    }
+    num2 += 1
+    if(t2.next!=None){
+    t2 = t2.next.get
+    }
   }
+
+  if (ch2 == 0) {
+    while (num <= len) {
+      if (compare(elem, t.get.value) < 0) {
+        nelem.get.next = t
+        nelem.get.prev = None
+        t.get.prev = nelem
+        t.get.next=None
+        length+=1
+        return nelem.get
+      }else if (compare(elem, t.get.value) > 0 && t.get.next==None){
+        if(t.get.next!=None){
+        t=t.get.next}
+        nelem.get.prev=t
+        t.get.next=nelem
+        length+=1
+        return nelem.get
+
+      }
+      t = t.get.next
+      num += 1
+    }
+  }
+
+
+  if (ch2 != 0) {
+    while (num <= len) {
+      if (t.get.next.get.next.get.next != lastNode) {
+        if (t.get.next.get.value == elem && t.get.next.get.next.get.value != elem) {
+          ch += 1
+
+          var pp = t.get.next.get.next
+
+          nelem.get.prev = pp.get.prev
+
+          nelem.get.next = pp
+          t.get.next = nelem
+          pp.get.prev = nelem
+          length+=1
+          return nelem.get
+        }
+      }
+      t = t.get.next
+      num += 1
+
+    }
+  }
+} else{
+     headNode=nelem
+}
+    length+=1;
+    return nelem.get
+
+}
+
+
+
 
   /**
    * Insert a new value into the list.
