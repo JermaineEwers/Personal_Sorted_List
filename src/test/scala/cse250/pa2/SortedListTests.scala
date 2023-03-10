@@ -226,6 +226,9 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(31)
     assert(list.getRef(0)==list.headNode.get)
     assert(list.getRef(0).next.get==list.headNode.get.next.get)
+
+   assertThrows[IndexOutOfBoundsException]{list.getRef(-1)}
+    assertThrows[IndexOutOfBoundsException]{list.getRef(6)}
   }
 
   it should "be a  apply" in {
@@ -234,6 +237,12 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(2)
     list.insert(30)
     list.insert(31)
+    assertThrows[IndexOutOfBoundsException] {
+      list.getRef(-1)
+    }
+    assertThrows[IndexOutOfBoundsException] {
+      list.getRef(6)
+    }
   assert(list.apply(1)==2)
   }
 
@@ -262,11 +271,16 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(30)
     list.insert(31)
     list.insert(31)
-    assert(list.lastNode.get.count==2)
-    assert(list.remove(list.lastNode.get)==31)
-   // assert(list.lastNode.get.count==1)
-    //assert(list.lastNode.get.value==30) //needs to be fixed
-    //assert(list.lastNode.get.value==31) //needs to be fixed
+
+    assertThrows[IllegalArgumentException] {
+      list.removeN(list.lastNode.get,10)
+    }
+
+    assert(list.lastNode.get.count == 2)
+    assert(list.remove(list.lastNode.get) == 31)
+    assert(list.lastNode.get.count == 1)
+    assert(list.lastNode.get.value == 31)
+    assert(list.lastNode.get.value == 31)
 
    /* assert(list.remove(list.getRef(0))==1)
     assert(list(0)==2)

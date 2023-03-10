@@ -214,10 +214,10 @@ return None
    */
   def getRef(idx: Int): SortedListNode[T] =
   {
-   /* if(idx<0 || idx>=length){
-     throw IndexOutOfBoundsException
+    if(idx<0 || idx>=length){
+     throw new IndexOutOfBoundsException
 
-    }*/
+    }
    var ret: SortedListNode[T]= headNode.get
     var t = headNode
 
@@ -248,6 +248,10 @@ return None
    */
   def apply(idx: Int): T =
   {
+    if (idx < 0 || idx >= length) {
+      throw new IndexOutOfBoundsException
+
+    }
     getRef(idx).value
   }
 
@@ -412,6 +416,10 @@ return None
    */
   def removeN(ref: SortedListNode[T], n: Int): T =
   {
+    if (n>length) {
+      throw new IllegalArgumentException
+
+    }
     ???
   }
 
