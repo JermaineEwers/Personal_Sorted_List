@@ -215,7 +215,7 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(2)
     list.insert(30)
     list.insert(31)
-   assert(list.findRef(2).get.value==2)
+   assert(list.findRef(2).get==list.getRef(1))
   }
 
   it should "be a  getref" in {
@@ -224,8 +224,8 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(2)
     list.insert(30)
     list.insert(31)
-    assert(list.getRef(0).value==1)
-    assert(list.getRef(0).next.get.value==2)
+    assert(list.getRef(0)==list.headNode.get)
+    assert(list.getRef(0).next.get==list.headNode.get.next.get)
   }
 
   it should "be a  apply" in {
@@ -237,38 +237,69 @@ class SortedListTests extends AnyFlatSpec {
   assert(list.apply(1)==2)
   }
 
+  it should "be a  insertion" in {
+    val list = new SortedList[Int]()
+    list.insert(1)
+    list.insert(2)
+    list.insert(30)
+    list.insert(31)
+    assert(list.headNode.get.value==1)
+    assert(list.lastNode.get.value==31)
+    assert(list.headNode.get.next.get.value==2)
+    assert(list.headNode.get.next.get.prev.get==list.headNode.get)
+    assert(list(0)==1)
+    assert(list(1)==2)
+    assert(list(2)==30)
+    assert(list(3)==31)
+
+
+
+
+
+  }
+
   it should "be a  remove" in {
     val list = new SortedList[Int]()
     list.insert(1)
     list.insert(2)
     list.insert(30)
     list.insert(31)
+    list.insert(31)
 
-    assert(list.remove(list.getRef(0))==1)
+    assert(list.remove(list.headNode.get)==1)
+    assert(list.headNode.get.value==2)
+    assert(list.remove(list.lastNode.get)==31)
+    assert(list.lastNode.get.value==31)
+    assert(list.lastNode.get.prev.get.value==30)
 
     val list2 = new SortedList[Int]()
+    list2.insert(1)
     list2.insert(1)
     list2.insert(2)
     list2.insert(30)
     list2.insert(30)
     list2.insert(31)
+assert(list2.removeN(list2.headNode.get,2)==1)
 
-    list2.removeN(list2.getRef(2),2)
-    assert(list2(2)==31)
-    list2.remove(list2.getRef(0))
+    val list22 = new SortedList[Int]()
+    list22.insert(1)
+    list22.insert(30)
+    list22.insert(30)
+    list22.insert(31)
+    list22.removeN(list22.headNode.get.next.get,2)
+    assert(list22.headNode.get.next==list22.lastNode)
 
-    assert(list2(0)==2)
 
 
     val list3 = new SortedList[Int]()
     list3.insert(1)
-    list3.insert(2)
     list3.insert(30)
     list3.insert(30)
     list3.insert(31)
 
-    list3.removeAll(list3.getRef(2))
-    assert(list3(2)==31)
+    list3.removeAll(list3.headNode.get.next.get)
+    assert(list3.headNode.get.next==list3.lastNode)
+    assert(list3(1)==31)
 
   }
 
