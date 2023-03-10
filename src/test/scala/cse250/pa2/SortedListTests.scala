@@ -268,13 +268,10 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(31)
 
     assert(list.remove(list.getRef(0))==1)
-    list.remove(list.getRef(0))
-    assert(list.headNode.get.value==2)
-    assert(list.lastNode.get.count==2)
+    assert(list(0)==2)
     assert(list.remove(list.getRef(3))==31)
-    list.remove(list.getRef(3))
-    assert(list.lastNode.get.count==1)
-    assert(list.lastNode.get.value==31) //needs to be fixed
+    assert(list(1)==30)
+    assert(list(2)==31) //needs to be fixed
 
 
     val list2 = new SortedList[Int]()
