@@ -68,28 +68,43 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    */
   def findRefBefore(elem: T): Option[SortedListNode[T]] =
   {
+
+   /* if(compare(elem,headNode.get.value)<0){
+      return None
+    }*/
+
     var t=headNode
+    if (compare(elem, t.get.value) < 0) {
+      return None
+    }
     var len:Int=length
     var num: Int = 0
     var ch=0
-    while(num<=len){
-    if(t.get.next.get.value==elem){
+    while(num<len){
+    if(t.get.value==elem){
       ch=ch+1
-      return t.get.next
+      return t
     }
-      t=t.get.next
       num+=1
-    }
+      t=t.get.next
 
+    }
+    t=headNode
+      num=0
     if(ch==0){
-      while (num <= len) {
-        if (compare(elem, t.get.value)>0 ) {
+      while (num < len) {
+        if (compare(elem, t.get.value)<0) {
+          return t.get.prev
+        }else if(t.get.next==None){
           return t
         }
-        t = t.get.next
         num += 1
+        t = t.get.next
+
       }
     }
+
+
 
 
 
@@ -161,13 +176,14 @@ return None
     var len: Int = length
     var num: Int = 0
     var ch = 0
-    while (num <= len) {
-      if (t.get.next.get.value == elem) {
+    while (num < len) {
+      if (t.get.value == elem) {
         ch = ch + 1
-        return t.get.next
+        return t
       }
-      t = t.get.next
       num += 1
+      t = t.get.next
+
     }
 
     return None
@@ -283,7 +299,7 @@ return None
    var t=headNode
 
 
-  var t2 = headNode.get
+  var t2 = headNode
   var len: Int = length+1
   var num: Int = 0
   var num2: Int = 0
@@ -291,40 +307,95 @@ return None
   var ch2 = 0
 
   while (num2 < len) {
-    if (t2.value == elem) {
+    if (t2.get.value == elem) {
       ch2 += 1
+      t2.get.count+=2
+      //nelem.get.prev=t2
+return nelem.get
     }
     num2 += 1
-    if(t2.next!=None){
-    t2 = t2.next.get
+    if(t2.get.next!=None){
+    t2 = t2.get.next
     }
+
   }
+     /* t2=headNode
+      num2=0
+      while (num2 < len) {
+        if(t2.get.next!=None){
+        if (t2.get.value == elem && t2.get.next.get.value!=elem) {
+          ch2 += 1
+          nelem.get.prev=t2
+          nelem.get.next=t2.get.next
+          t2.get.next.get.prev=nelem
+          t2.get.next=nelem
+            length+=1
+        }
+        }else if(t2.get.next==None){
+          if (t2.get.value == elem) {
+            ch2 += 1
+            nelem.get.prev = t2
+            nelem.get.next = None
+            t2.get.next = nelem
+            length += 1
+          }
+        }
+        num2 += 1
+        if (t2.get.next != None) {
+          t2 = t2.get.next
+        }
+
+
+      } */
 
   if (ch2 == 0) {
-    while (num <= len) {
-      if (compare(elem, t.get.value) < 0) {
+    while (num < len) {
+      if (compare(elem, t.get.value) < 0 && t.get.prev==None) {
+        if (compare(elem, headNode.get.value) < 0) {
+          headNode = nelem
+        }
         nelem.get.next = t
         nelem.get.prev = None
         t.get.prev = nelem
-        t.get.next=None
+        //t.get.next=None
         length+=1
+        return nelem.get
+      }else if(compare(elem, t.get.value) < 0 && t.get.prev!=None){
+
+        nelem.get.next = t
+        nelem.get.prev = t.get.prev
+        t.get.prev.get.next = nelem
+        t.get.prev=nelem
+        //t.get.next = None
+        length += 1
         return nelem.get
       }else if (compare(elem, t.get.value) > 0 && t.get.next==None){
         if(t.get.next!=None){
         t=t.get.next}
         nelem.get.prev=t
         t.get.next=nelem
+        nelem.get.next=None
+        lastNode=nelem
         length+=1
         return nelem.get
 
-      }
+      }/*else if (compare(elem, t.get.value) > 0 && t.get.next!=None){
+        nelem.get.prev=t
+        t.get.next.get.prev=nelem
+        nelem.get.next=t.get.next
+        t.get.next=nelem
+       // lastNode = nelem
+        length += 1
+        return nelem.get
+
+      }*/
       t = t.get.next
       num += 1
     }
   }
 
 
-  if (ch2 != 0) {
+  /*if (ch2 != 0) {
     while (num <= len) {
       if (t.get.next.get.next.get.next != lastNode) {
         if (t.get.next.get.value == elem && t.get.next.get.next.get.value != elem) {
@@ -345,7 +416,7 @@ return None
       num += 1
 
     }
-  }
+  }*/
 } else{
      headNode=nelem
 }
