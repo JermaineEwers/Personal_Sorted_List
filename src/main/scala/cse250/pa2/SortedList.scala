@@ -30,24 +30,24 @@ import scala.collection.mutable
  * which is normally linear <i>in the size of the list</i> will drop to linear
  * in the number of records between the hint and the search term.
  */
-class SortedList[T: Ordering] extends mutable.Seq[T]
-{
+class SortedList[T: Ordering] extends mutable.Seq[T] {
   var headNode: Option[SortedListNode[T]] = None
   var lastNode: Option[SortedListNode[T]] = None
   var length = 0
 
   /**
-   * Compare two values of the sequence type  
-   * @param      a         The first element to compare
-   * @param      b         The second element to compare
-   * @return               <tt>0</tt> if a = b, a negative integer if a < b, 
-   *                       a positive integer if a > b 
-   * 
-   * This function is parameterized by a user-provided Ordering[T] 
-   * implementation.  Complexity requirements listed below assume that
-   * this function runs in O(1).
+   * Compare two values of the sequence type
+   *
+   * @param a The first element to compare
+   * @param b The second element to compare
+   * @return <tt>0</tt> if a = b, a negative integer if a < b,
+   *         a positive integer if a > b
+   *
+   *         This function is parameterized by a user-provided Ordering[T]
+   *         implementation.  Complexity requirements listed below assume that
+   *         this function runs in O(1).
    */
-  private def compare(a: T, b: T): Int = 
+  private def compare(a: T, b: T): Int =
     Ordering[T].compare(a, b)
 
   /**
@@ -57,45 +57,45 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
    * @return The node containing the greatest element equal to
    *         or below elem.
    *
-   * If the list contains elem, this function should return the list node
-   * containing it.
+   *         If the list contains elem, this function should return the list node
+   *         containing it.
    *
-   * If the list does not contain elem, this function should return a reference
-   * to the element that would precede it if it were in the list, or None if
-   * elem is lower than the lowest element in the list.
+   *         If the list does not contain elem, this function should return a reference
+   *         to the element that would precede it if it were in the list, or None if
+   *         elem is lower than the lowest element in the list.
    *
-   * This function should run in O(length)
+   *         This function should run in O(length)
    */
-  def findRefBefore(elem: T): Option[SortedListNode[T]] =
-  {
+  def findRefBefore(elem: T): Option[SortedListNode[T]] = {
 
-   /* if(compare(elem,headNode.get.value)<0){
+    /* if(compare(elem,headNode.get.value)<0){
       return None
     }*/
 
-    var t=headNode
+    var t = headNode
     if (compare(elem, t.get.value) < 0) {
       return None
     }
-    var len:Int=length
+    var len: Int = length
     var num: Int = 0
-    var ch=0
-    while(num<len){
-    if(t.get.value==elem){
-      ch=ch+1
-      return t
-    }
-      num+=1
-      t=t.get.next
+    var ch = 0
+    while (num < len) {
+      if (t.get.value == elem) {
+        ch = ch + 1
+        return t
+      }
+      num += 1
+      t = t.get.next
 
     }
-    t=headNode
-      num=0
-    if(ch==0){
+
+    t = headNode
+    num = 0
+    if (ch == 0) {
       while (num < len) {
-        if (compare(elem, t.get.value)<0) {
+        if (compare(elem, t.get.value) < 0) {
           return t.get.prev
-        }else if(t.get.next==None){
+        } else if (t.get.next == None) {
           return t
         }
         num += 1
@@ -105,10 +105,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T]
     }
 
 
-
-
-
-return None
+    return None
 
 
   }
@@ -121,43 +118,107 @@ return None
    * @return The node containing the greatest element equal to
    *         or below elem.
    *
-   * If the list contains elem, this function should return the list node
-   * containing it.
+   *         If the list contains elem, this function should return the list node
+   *         containing it.
    *
-   * If the list does not contain elem, this function should return a reference
-   * to the element that would precede it if it were in the list, or None if
-   * elem is lower than the lowest element in the list.
+   *         If the list does not contain elem, this function should return a reference
+   *         to the element that would precede it if it were in the list, or None if
+   *         elem is lower than the lowest element in the list.
    *
-   * If hint is at position i and elem is at position j, then this function
-   * should run in O( |i-j| )
+   *         If hint is at position i and elem is at position j, then this function
+   *         should run in O( |i-j| )
    */
-  def findRefBefore(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] =
-  {
-    var t = hint.prev.get.next
-    var len: Int = length
-    var num: Int = 0
-    var ch = 0
-    while (num <= len) {
-      if (t.get.next.get.value == elem) {
-        ch = ch + 1
-        return t.get.next
-      }
-      t = t.get.next
-      num += 1
+  def findRefBefore(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] = {
+    if (compare(elem, headNode.get.value) < 0) {
+      return None
     }
 
-    if (ch == 0) {
-      while (num <= len) {
-        if (compare(elem, t.get.value) > 0) {
+    if (compare(elem, hint.value) > 0) {
+      //forward
+      var t: Option[SortedListNode[T]] = None
+      if (hint.prev != None) {
+        t = hint.prev.get.next
+      } else if (hint.next != None) {
+        t = hint.next.get.prev
+      }
+      var len: Int = length
+      var num: Int = 0
+      var ch = 0
+      while (t != None) {
+        if (t.get.value == elem) {
+          ch = ch + 1
           return t
         }
         t = t.get.next
         num += 1
       }
+
+      if (hint.prev != None) {
+        t = hint.prev.get.next
+      } else if (hint.next != None) {
+        t = hint.next.get.prev
+      }
+
+      if (ch == 0) {
+        while (t != None) {
+          if (compare(elem, t.get.value) < 0) {
+            return t
+          } else if (t.get.next == None) {
+            return t
+          }
+          t = t.get.next
+          num += 1
+        }
+      }
+
+    } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
+      //going backwards
+      var tt: Option[SortedListNode[T]] = None
+      var ch2 = 0
+      if (hint.prev != None) {
+        tt = hint.prev.get.next
+      } else if (hint.next != None) {
+        tt = hint.next.get.prev
+      }
+
+      while (tt != None) {
+        if (tt.get.value == elem) {
+          ch2 = ch2 + 1
+          return tt
+        }
+        tt = tt.get.prev
+      }
+
+      if (hint.prev != None) {
+        tt = hint.prev.get.next
+      } else if (hint.next != None) {
+        tt = hint.next.get.prev
+      }
+
+      if (ch2 == 0) {
+        while (tt != None) {
+          if (compare(elem, tt.get.value) > 0) {
+            return tt
+          } else if (tt.get.next == None) {
+            return tt
+          }
+          tt = tt.get.prev
+          //num += 1
+        }
+      }
+    } else if (compare(elem, hint.value) == 0) {
+      var ttt: Option[SortedListNode[T]] = None
+      if (hint.prev != None) {
+        ttt = hint.prev.get.next
+      } else if (hint.next != None) {
+        ttt = hint.next.get.prev
+      }
+      return ttt
     }
 
 
     return None
+
   }
 
   /**
@@ -168,10 +229,9 @@ return None
    * @return Some(node) of the node containing elem, or None
    *         if elem is not present in the list
    *
-   * This function should run in O(length)
+   *         This function should run in O(length)
    */
-  def findRef(elem: T): Option[SortedListNode[T]] =
-  {
+  def findRef(elem: T): Option[SortedListNode[T]] = {
     var t = headNode
     var len: Int = length
     var num: Int = 0
@@ -196,21 +256,47 @@ return None
    * @return Some(node) of the node containing elem, or None
    *         if elem is not present in the list
    *
-   * This function should run in O(length)
+   *         This function should run in O(length)
    */
-  def findRef(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] =
-  {
-    var t = hint.prev.get.next
-    var len: Int = length
-    var num: Int = 0
-    var ch = 0
-    while (num <= len) {
-      if (t.get.next.get.value == elem) {
-        ch = ch + 1
-        return t.get.next
+  def findRef(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] = {
+    if (compare(elem, hint.value) > 0) {
+      //forward
+      var t: Option[SortedListNode[T]] = None
+      if (hint.prev != None) {
+        t = hint.prev.get.next
+      } else if (hint.next != None) {
+        t = hint.next.get.prev
       }
-      t = t.get.next
-      num += 1
+      var len: Int = length
+      var num: Int = 0
+      var ch = 0
+      while (t != None) {
+        if (t.get.value == elem) {
+          ch = ch + 1
+          return t
+        }
+        t = t.get.next
+        num += 1
+      }
+
+    } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
+      //going backwards
+      var tt: Option[SortedListNode[T]] = None
+      var ch2 = 0
+      if (hint.prev != None) {
+        tt = hint.prev.get.next
+      } else if (hint.next != None) {
+        tt = hint.next.get.prev
+      }
+
+      while (tt != None) {
+        if (tt.get.value == elem) {
+          ch2 = ch2 + 1
+          return tt
+        }
+        tt = tt.get.prev
+      }
+
     }
 
     return None
@@ -223,18 +309,17 @@ return None
    * @return The node <b>currently</b> at the specified index
    * @throw IndexOutOfBoundsException if idx < 0 or idx >= length
    *
-   * If the list changes, references to nodes who's values are unchanged
-   * should remain valid, even if their index changes.
+   *        If the list changes, references to nodes who's values are unchanged
+   *        should remain valid, even if their index changes.
    *
-   * This function should run in O(idx)
+   *        This function should run in O(idx)
    */
-  def getRef(idx: Int): SortedListNode[T] =
-  {
-    if(idx<0 || idx>=length){
-     throw new IndexOutOfBoundsException
+  def getRef(idx: Int): SortedListNode[T] = {
+    if (idx < 0 || idx >= length) {
+      throw new IndexOutOfBoundsException
 
     }
-   var ret: SortedListNode[T]= headNode.get
+    var ret: SortedListNode[T] = headNode.get
     var t = headNode
 
     var len: Int = idx
@@ -243,7 +328,7 @@ return None
     while (num <= len) {
       if (num == len) {
 
-        ret =t.get
+        ret = t.get
         return t.get
       }
       t = t.get.next
@@ -260,15 +345,14 @@ return None
    * @return The value currently at the specified index
    * @throw IndexOutOfBoundsException if idx < 0 or idx >= length
    *
-   * This function should run in O(idx)
+   *        This function should run in O(idx)
    */
-  def apply(idx: Int): T =
-  {
+  def apply(idx: Int): T = {
     if (idx < 0 || idx >= length) {
       throw new IndexOutOfBoundsException
 
     }
-    getRef(idx).value
+    return getRef(idx).value
   }
 
   /**
@@ -277,153 +361,146 @@ return None
    * @param elem The value to insert
    * @return A reference to the inserted value
    *
-   * The value should be placed so that the list remains in sorted order.
-   * After the insertion, the inserted element's <tt>next</tt> method
-   * should return a reference to the next greatest element, and the
-   * <tt>prev</tt> method should return a reference to the next least
-   * element.
+   *         The value should be placed so that the list remains in sorted order.
+   *         After the insertion, the inserted element's <tt>next</tt> method
+   *         should return a reference to the next greatest element, and the
+   *         <tt>prev</tt> method should return a reference to the next least
+   *         element.
    *
-   * If elem is already in the list, the existing node should just be
-   * updated to indicate another instance of that element has been
-   * inserted.
+   *         If elem is already in the list, the existing node should just be
+   *         updated to indicate another instance of that element has been
+   *         inserted.
    *
-   * This function should run in O(length)
+   *         This function should run in O(length)
    */
-  def insert(elem: T): SortedListNode[T] =
-  {
+  def insert(elem: T): SortedListNode[T] = {
     var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 0, None, None))
     //(elem, 0, None, None)
 
-    if(headNode!=None) {
+    if (headNode != None) {
 
-   var t=headNode
+      var t = headNode
 
 
-  var t2 = headNode
-  var len: Int = length+1
-  var num: Int = 0
-  var num2: Int = 0
-  var ch = 0
-  var ch2 = 0
+      var t2 = headNode
+      var len: Int = length + 1
+      var num: Int = 0
+      var num2: Int = 0
+      var ch = 0
+      var ch2 = 0
 
-  while (num2 < len) {
-    if (t2.get.value == elem) {
-      ch2 += 1
-      t2.get.count+=2
-      //nelem.get.prev=t2
-return nelem.get
-    }
-    num2 += 1
-    if(t2.get.next!=None){
-    t2 = t2.get.next
-    }
-
-  }
-     /* t2=headNode
-      num2=0
       while (num2 < len) {
-        if(t2.get.next!=None){
-        if (t2.get.value == elem && t2.get.next.get.value!=elem) {
+        if (t2.get.value == elem) {
           ch2 += 1
-          nelem.get.prev=t2
-          nelem.get.next=t2.get.next
-          t2.get.next.get.prev=nelem
-          t2.get.next=nelem
-            length+=1
-        }
-        }else if(t2.get.next==None){
-          if (t2.get.value == elem) {
-            ch2 += 1
-            nelem.get.prev = t2
-            nelem.get.next = None
-            t2.get.next = nelem
-            length += 1
-          }
+          t2.get.count += 2
+          //nelem.get.prev=t2
+          return nelem.get
         }
         num2 += 1
         if (t2.get.next != None) {
           t2 = t2.get.next
         }
 
+      }
+      /* t2=headNode
+       num2=0
+       while (num2 < len) {
+         if(t2.get.next!=None){
+         if (t2.get.value == elem && t2.get.next.get.value!=elem) {
+           ch2 += 1
+           nelem.get.prev=t2
+           nelem.get.next=t2.get.next
+           t2.get.next.get.prev=nelem
+           t2.get.next=nelem
+             length+=1
+         }
+         }else if(t2.get.next==None){
+           if (t2.get.value == elem) {
+             ch2 += 1
+             nelem.get.prev = t2
+             nelem.get.next = None
+             t2.get.next = nelem
+             length += 1
+           }
+         }
+         num2 += 1
+         if (t2.get.next != None) {
+           t2 = t2.get.next
+         }
+       } */
 
-      } */
+      if (ch2 == 0) {
+        while (num < len) {
+          if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
+            if (compare(elem, headNode.get.value) < 0) {
+              headNode = nelem
+            }
+            nelem.get.next = t
+            nelem.get.prev = None
+            t.get.prev = nelem
+            //t.get.next=None
+            length += 1
+            return nelem.get
+          } else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
 
-  if (ch2 == 0) {
-    while (num < len) {
-      if (compare(elem, t.get.value) < 0 && t.get.prev==None) {
-        if (compare(elem, headNode.get.value) < 0) {
-          headNode = nelem
-        }
-        nelem.get.next = t
-        nelem.get.prev = None
-        t.get.prev = nelem
-        //t.get.next=None
-        length+=1
-        return nelem.get
-      }else if(compare(elem, t.get.value) < 0 && t.get.prev!=None){
+            nelem.get.next = t
+            nelem.get.prev = t.get.prev
+            t.get.prev.get.next = nelem
+            t.get.prev = nelem
+            //t.get.next = None
+            length += 1
+            return nelem.get
+          } else if (compare(elem, t.get.value) > 0 && t.get.next == None) {
+            if (t.get.next != None) {
+              t = t.get.next
+            }
+            nelem.get.prev = t
+            t.get.next = nelem
+            nelem.get.next = None
+            lastNode = nelem
+            length += 1
+            return nelem.get
 
-        nelem.get.next = t
-        nelem.get.prev = t.get.prev
-        t.get.prev.get.next = nelem
-        t.get.prev=nelem
-        //t.get.next = None
-        length += 1
-        return nelem.get
-      }else if (compare(elem, t.get.value) > 0 && t.get.next==None){
-        if(t.get.next!=None){
-        t=t.get.next}
-        nelem.get.prev=t
-        t.get.next=nelem
-        nelem.get.next=None
-        lastNode=nelem
-        length+=1
-        return nelem.get
-
-      }/*else if (compare(elem, t.get.value) > 0 && t.get.next!=None){
-        nelem.get.prev=t
-        t.get.next.get.prev=nelem
-        nelem.get.next=t.get.next
-        t.get.next=nelem
-       // lastNode = nelem
-        length += 1
-        return nelem.get
-
-      }*/
-      t = t.get.next
-      num += 1
-    }
-  }
-
-
-  /*if (ch2 != 0) {
-    while (num <= len) {
-      if (t.get.next.get.next.get.next != lastNode) {
-        if (t.get.next.get.value == elem && t.get.next.get.next.get.value != elem) {
-          ch += 1
-
-          var pp = t.get.next.get.next
-
-          nelem.get.prev = pp.get.prev
-
-          nelem.get.next = pp
-          t.get.next = nelem
-          pp.get.prev = nelem
-          length+=1
+          } /*else if (compare(elem, t.get.value) > 0 && t.get.next!=None){
+          nelem.get.prev=t
+          t.get.next.get.prev=nelem
+          nelem.get.next=t.get.next
+          t.get.next=nelem
+         // lastNode = nelem
+          length += 1
           return nelem.get
+        }*/
+          t = t.get.next
+          num += 1
         }
       }
-      t = t.get.next
-      num += 1
 
+
+      /*if (ch2 != 0) {
+        while (num <= len) {
+          if (t.get.next.get.next.get.next != lastNode) {
+            if (t.get.next.get.value == elem && t.get.next.get.next.get.value != elem) {
+              ch += 1
+              var pp = t.get.next.get.next
+              nelem.get.prev = pp.get.prev
+              nelem.get.next = pp
+              t.get.next = nelem
+              pp.get.prev = nelem
+              length+=1
+              return nelem.get
+            }
+          }
+          t = t.get.next
+          num += 1
+        }
+      }*/
+    } else {
+      headNode = nelem
     }
-  }*/
-} else{
-     headNode=nelem
-}
-    length+=1;
+    length += 1;
     return nelem.get
 
-}
+  }
 
 
 
@@ -449,11 +526,169 @@ return nelem.get
    * If hint is at position i and elem should be inserted at position j,
    * then this function should run in O( |i-j| )
    */
-  def insert(elem: T, hint: SortedListNode[T]): SortedListNode[T] =
-  {
-    ???
-  }
+  def insert(elem: T, hint: SortedListNode[T]): SortedListNode[T] = {
+    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 0, None, None))
+    //(elem, 0, None, None)
 
+    if (headNode != None) {
+     if(compare(elem, hint.value) > 0) {
+       var t: Option[SortedListNode[T]] = None
+       if (hint.prev != None) {
+         t = hint.prev.get.next
+       } else if (hint.next != None) {
+         t = hint.next.get.prev
+       }else if(hint.prev == None){
+         t=headNode
+       }else if(hint.next==None){
+         t=lastNode
+       }
+
+
+       var t2: Option[SortedListNode[T]] = None
+       if (hint.prev != None) {
+         t2 = hint.prev.get.next
+       } else if (hint.next != None) {
+         t2 = hint.next.get.prev
+       }
+       var len: Int = length + 1
+       var num: Int = 0
+       var num2: Int = 0
+       var ch = 0
+       var ch2 = 0
+
+       while (t2 != None) {
+         if (t2.get.value == elem) {
+           ch2 += 1
+           t2.get.count += 2
+           //nelem.get.prev=t2
+           return nelem.get
+         }
+         num2 += 1
+
+           t2 = t2.get.next
+
+       }
+
+       if (ch2 == 0) {
+
+         while (t != None) {
+           if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
+             if (compare(elem, headNode.get.value) < 0) {
+               headNode = nelem
+             }
+             nelem.get.next = t
+             nelem.get.prev = None
+             t.get.prev = nelem
+             //t.get.next=None
+             length += 1
+             return nelem.get
+           } else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
+
+             nelem.get.next = t
+             nelem.get.prev = t.get.prev
+             t.get.prev.get.next = nelem
+             t.get.prev = nelem
+             //t.get.next = None
+             length += 1
+             return nelem.get
+           } else if (compare(elem, t.get.value) > 0 && t.get.next == None) {
+             if (t.get.next != None) {
+               t = t.get.next
+             }
+             nelem.get.prev = t
+             t.get.next = nelem
+             nelem.get.next = None
+             lastNode = nelem
+             length += 1
+             return nelem.get
+           }
+           t = t.get.next
+           num += 1
+         }
+       }
+     } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
+        //backwards
+        var t: Option[SortedListNode[T]] = None
+        if (hint.prev != None) {
+          t = hint.prev.get.next
+        } else if (hint.next != None) {
+          t = hint.next.get.prev
+        }
+
+
+        var t2: Option[SortedListNode[T]] = None
+        if (hint.prev != None) {
+          t2 = hint.prev.get.next
+        } else if (hint.next != None) {
+          t2 = hint.next.get.prev
+        }
+        var len: Int = length + 1
+        var num: Int = 0
+        var num2: Int = 0
+        var ch = 0
+        var ch2 = 0
+
+        while (t2 != None) {
+          if (t2.get.value == elem) {
+            ch2 += 1
+            t2.get.count += 2
+            //nelem.get.prev=t2
+            return nelem.get
+          }
+          num2 += 1
+
+          t2 = t2.get.prev
+
+        }
+
+        if (ch2 == 0) {
+          while (t != None) {
+            if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
+              if (compare(elem, headNode.get.value) < 0) {
+                headNode = nelem
+              }
+              nelem.get.next = t
+              nelem.get.prev = None
+              t.get.prev = nelem
+              //t.get.next=None
+              length += 1
+              return nelem.get
+            } else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
+
+              nelem.get.next = t
+              nelem.get.prev = t.get.prev
+              t.get.prev.get.next = nelem
+              t.get.prev = nelem
+              //t.get.next = None
+              length += 1
+              return nelem.get
+            } else if (compare(elem, t.get.value) > 0 && t.get.next == None) {
+              if (t.get.next != None) {
+                t = t.get.next
+              }
+              nelem.get.prev = t
+              t.get.next = nelem
+              nelem.get.next = None
+              lastNode = nelem
+              length += 1
+              return nelem.get
+            }
+            t = t.get.prev
+            num += 1
+          }
+        }
+
+      }
+    } else {
+        headNode = nelem
+        length += 1
+      }
+
+
+      return nelem.get
+
+
+  }
   /**
    * Remove one instance of the value of the referenced node from the list
    *
@@ -468,7 +703,35 @@ return nelem.get
    */
   def remove(ref: SortedListNode[T]): T =
   {
-    ???
+
+    findRef(ref.value).get.count=findRef(ref.value).get.count -1
+
+    if(findRef(ref.value).get.count==0){
+    if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev!=None ){
+      findRef(ref.value).get.prev.get.next=findRef(ref.value).get.next
+      findRef(ref.value).get.next.get.prev=findRef(ref.value).get.prev
+      findRef(ref.value).get.next=None
+      findRef(ref.value).get.prev=None
+      return ref.value
+    }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
+      lastNode=findRef(ref.value).get.prev
+      findRef(ref.value).get.prev.get.next=None
+      findRef(ref.value).get.prev=None
+      return ref.value
+    }else if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev==None ){
+      headNode=findRef(ref.value).get.next
+      findRef(ref.value).get.next.get.prev=None
+      findRef(ref.value).get.next=None
+      return ref.value
+    }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev==None){
+      headNode=None
+      return ref.value
+    }
+
+    }
+    return ref.value
+
+
   }
 
   /**
@@ -491,7 +754,35 @@ return nelem.get
       throw new IllegalArgumentException
 
     }
-    ???
+
+    findRef(ref.value).get.count = findRef(ref.value).get.count - n
+
+    if (findRef(ref.value).get.count == 0) {
+      if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
+        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+        findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
+        findRef(ref.value).get.next = None
+        findRef(ref.value).get.prev = None
+        return ref.value
+      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
+        lastNode = findRef(ref.value).get.prev
+        findRef(ref.value).get.prev.get.next = None
+        findRef(ref.value).get.prev = None
+        return ref.value
+      } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
+        headNode = findRef(ref.value).get.next
+        findRef(ref.value).get.next.get.prev = None
+        findRef(ref.value).get.next = None
+        return ref.value
+      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
+        headNode = None
+        return ref.value
+      }
+
+    }
+    return ref.value
+
+
   }
 
   /**
@@ -504,7 +795,32 @@ return nelem.get
    */
   def removeAll(ref: SortedListNode[T]): T =
   {
-    ???
+    findRef(ref.value).get.count = 0
+
+    if (findRef(ref.value).get.count == 0) {
+      if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
+        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+        findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
+        findRef(ref.value).get.next = None
+        findRef(ref.value).get.prev = None
+        return ref.value
+      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
+        lastNode = findRef(ref.value).get.prev
+        findRef(ref.value).get.prev.get.next = None
+        findRef(ref.value).get.prev = None
+        return ref.value
+      } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
+        headNode = findRef(ref.value).get.next
+        findRef(ref.value).get.next.get.prev = None
+        findRef(ref.value).get.next = None
+        return ref.value
+      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
+        headNode = None
+        return ref.value
+      }
+
+    }
+    return ref.value
   }
 
   /**

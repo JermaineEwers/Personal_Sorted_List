@@ -206,6 +206,10 @@ class SortedListTests extends AnyFlatSpec {
 
     assert(list.findRefBefore(34).get== list.getRef(3) )
     assert(list.findRefBefore(0)==None)
+
+    assert(list.findRefBefore(31,list.getRef(2)).get==list.getRef(3))
+    assert(list.findRefBefore(34,list.getRef(1)).get== list.getRef(3) )
+    assert(list.findRefBefore(0,list.getRef(1))==None)
     //assert(list.findRefBefore(10)== list.findRef(2 ))
 
   //  assert(list.findRefBefore(0)!= None)
@@ -217,8 +221,13 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(2)
     list.insert(30)
     list.insert(31)
-   assert(list.findRef(2).get==list.getRef(1))
+
+    assert(list.findRef(2).get==list.getRef(1))
     assert(list.findRef(32) == None)
+
+    assert(list.findRef(2,list.getRef(0)).get==list.getRef(1))
+    assert(list.findRef(31,list.getRef(2)).get==list.getRef(3))
+
   }
 
   it should "be a  getref" in {
@@ -280,7 +289,16 @@ class SortedListTests extends AnyFlatSpec {
     assert(lists(6)==31)
     assert(lists.getRef(6).count==2)
 
-//println(lists(7 ))
+    val listt = new SortedList[Int]()
+    listt.insert(1)
+    listt.insert(5)
+    listt.insert(8)
+    listt.insert(30)
+    listt.insert(33)
+    listt.insert(31,listt.getRef(2))
+    assert(listt.getRef(4).value==31)
+
+    //println(listt)
   }
 
   it should "be a  remove" in {
