@@ -374,7 +374,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    *         This function should run in O(length)
    */
   def insert(elem: T): SortedListNode[T] = {
-    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 0, None, None))
+    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 1, None, None))
     //(elem, 0, None, None)
 
     if (headNode != None) {
@@ -392,7 +392,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       while (num2 < len) {
         if (t2.get.value == elem) {
           ch2 += 1
-          t2.get.count += 2
+          t2.get.count += 1
           //nelem.get.prev=t2
           return nelem.get
         }
@@ -496,6 +496,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       }*/
     } else {
       headNode = nelem
+      lastNode=nelem
     }
     length += 1;
     return nelem.get
@@ -527,7 +528,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    * then this function should run in O( |i-j| )
    */
   def insert(elem: T, hint: SortedListNode[T]): SortedListNode[T] = {
-    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 0, None, None))
+    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 1, None, None))
     //(elem, 0, None, None)
 
     if (headNode != None) {
@@ -559,7 +560,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
        while (t2 != None) {
          if (t2.get.value == elem) {
            ch2 += 1
-           t2.get.count += 2
+           t2.get.count += 1
            //nelem.get.prev=t2
            return nelem.get
          }
@@ -631,7 +632,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         while (t2 != None) {
           if (t2.get.value == elem) {
             ch2 += 1
-            t2.get.count += 2
+            t2.get.count += 1
             //nelem.get.prev=t2
             return nelem.get
           }
@@ -681,6 +682,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       }
     } else {
         headNode = nelem
+      lastNode=nelem
         length += 1
       }
 
@@ -755,24 +757,32 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     }
 
+     var ttt=headNode.get.next
+    var last=lastNode.get.prev
+
     findRef(ref.value).get.count = findRef(ref.value).get.count - n
 
     if (findRef(ref.value).get.count == 0) {
       if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
-        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
         findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
-        findRef(ref.value).get.next = None
-        findRef(ref.value).get.prev = None
+        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+        //findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
+        //findRef(ref.value).get.next = None
+        //findRef(ref.value).get.prev = None
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
-        lastNode = findRef(ref.value).get.prev
+        //lastNode = findRef(ref.value).get.prev
         findRef(ref.value).get.prev.get.next = None
+
         findRef(ref.value).get.prev = None
+        lastNode = last
         return ref.value
       } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
-        headNode = findRef(ref.value).get.next
+        //headNode = findRef(ref.value).get.next
         findRef(ref.value).get.next.get.prev = None
+
         findRef(ref.value).get.next = None
+        headNode = ttt
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
         headNode = None
@@ -799,10 +809,11 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     if (findRef(ref.value).get.count == 0) {
       if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
-        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
         findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
-        findRef(ref.value).get.next = None
-        findRef(ref.value).get.prev = None
+        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+
+        //findRef(ref.value).get.next = None
+        //findRef(ref.value).get.prev = None
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
         lastNode = findRef(ref.value).get.prev

@@ -265,6 +265,19 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(30)
     list.insert(31)
 
+
+
+    //check next and prev and count
+    assert(list.findRef(31).get.prev.get.value==30)
+    assert(list.findRef(31).get.next==None)
+    var i=0
+    while(i<4){
+      assert(list.findRef(list(i)).get.count==1)
+      i+=1
+    }
+
+    assert(list.length==4)
+
     assert(list.headNode.get.value==1)
     assert(list.lastNode.get.value==31)
     assert(list.headNode.get.next.get.value==2)
@@ -285,6 +298,13 @@ class SortedListTests extends AnyFlatSpec {
     lists.insert(31)
     lists.insert(0)
 
+
+    var t = lists.headNode
+    while (t.get.next != None) {
+      assert(t.get.value<t.get.next.get.value)
+      t=t.get.next
+    }
+
     assert(lists(0)==0)
     assert(lists(6)==31)
     assert(lists.getRef(6).count==2)
@@ -296,7 +316,14 @@ class SortedListTests extends AnyFlatSpec {
     listt.insert(30)
     listt.insert(33)
     listt.insert(31,listt.getRef(2))
+    assert(listt.length==6)
     assert(listt.getRef(4).value==31)
+
+
+    val listtt = new SortedList[Int]()
+    listtt.insert(1)
+    assert(listtt.headNode.get.value==1)
+    assert(listtt.lastNode.get.value==1)
 
     //println(listt)
   }
@@ -316,6 +343,7 @@ class SortedListTests extends AnyFlatSpec {
 
     assert(list.lastNode.get.count == 2)
     assert(list.remove(list.lastNode.get) == 31)
+
     assert(list.lastNode.get.count == 1)
     assert(list.lastNode.get.value == 31)
     assert(list.lastNode.get.value == 31)
