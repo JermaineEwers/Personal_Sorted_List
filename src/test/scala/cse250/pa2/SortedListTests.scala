@@ -268,6 +268,14 @@ class SortedListTests extends AnyFlatSpec {
     lisst.insert(30)
     lisst.insert(31)
     lisst.update(lisst.lastNode.get,32)
+
+    assert(lisst.getRef(0) == lisst.getRef(1).prev.get)
+    assert(lisst.getRef(1) == lisst.getRef(2).prev.get)
+    assert(lisst.getRef(2) == lisst.getRef(3).prev.get)
+
+    assert(lisst.getRef(0).next.get == lisst.getRef(1))
+    assert(lisst.getRef(1).next.get == lisst.getRef(2))
+    assert(lisst.getRef(2).next.get == lisst.getRef(3))
     println(lisst)
 
 
@@ -276,6 +284,10 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(2)
     list.insert(30)
     list.insert(31)
+
+    assert(list.getRef(0) == list.getRef(1).prev.get)
+    assert(list.getRef(1) == list.getRef(2).prev.get)
+    assert(list.getRef(2) == list.getRef(3).prev.get)
 
     assert(list.getRef(0).next.get== list.getRef(1))
     assert(list.getRef(1).next.get== list.getRef(2))
