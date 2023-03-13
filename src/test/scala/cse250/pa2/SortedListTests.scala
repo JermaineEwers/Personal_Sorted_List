@@ -189,6 +189,9 @@ class SortedListTests extends AnyFlatSpec {
     }
   }
 
+
+
+
   it should "be a  findrefbefore" in {
     val list = new SortedList[Int]()
     //list.insert(1)
@@ -259,20 +262,41 @@ class SortedListTests extends AnyFlatSpec {
   }
 
   it should "be a  insertion" in {
+    val lisst = new SortedList[Int]()
+    lisst.insert(1)
+    lisst.insert(2)
+    lisst.insert(30)
+    lisst.insert(31)
+    lisst.update(lisst.lastNode.get,32)
+    println(lisst)
+
+
     val list = new SortedList[Int]()
     list.insert(1)
     list.insert(2)
     list.insert(30)
     list.insert(31)
 
-
-
+    assert(list.getRef(0).next.get== list.getRef(1))
+    assert(list.getRef(1).next.get== list.getRef(2))
+    assert(list.getRef(2).next.get== list.getRef(3))
     //check next and prev and count
     assert(list.findRef(31).get.prev.get.value==30)
     assert(list.findRef(31).get.next==None)
     var i=0
     while(i<4){
-      assert(list.findRef(list(i)).get.count==1)
+
+      if(list.findRef(list(i)) == list.headNode){
+        assert(list.findRef(list(i)).get.prev==None)
+        assert(list.findRef(list(i)).get.next==list.findRef(list(1)))
+      } else if(list.findRef(list(i)) == list.lastNode){
+        assert(list.findRef(list(i)).get.next==None)
+        assert(list.findRef(list(i)).get.prev==list.findRef(list(2)))
+      }else{
+        assert(list.findRef(list(i)).get.count==1)
+      }
+
+
       i+=1
     }
 

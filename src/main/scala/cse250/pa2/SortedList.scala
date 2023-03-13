@@ -710,10 +710,11 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     if(findRef(ref.value).get.count==0){
     if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev!=None ){
-      findRef(ref.value).get.prev.get.next=findRef(ref.value).get.next
       findRef(ref.value).get.next.get.prev=findRef(ref.value).get.prev
-      findRef(ref.value).get.next=None
-      findRef(ref.value).get.prev=None
+      findRef(ref.value).get.prev.get.next=findRef(ref.value).get.next
+
+     // findRef(ref.value).get.next=None
+      //findRef(ref.value).get.prev=None
       return ref.value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
       lastNode=findRef(ref.value).get.prev
