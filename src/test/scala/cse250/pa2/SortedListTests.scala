@@ -313,7 +313,7 @@ class SortedListTests extends AnyFlatSpec {
     assert(listy.getRef(1).next.get == listy.getRef(2))
     assert(listy.getRef(2).next.get == listy.getRef(3))*/
 
-    assert(listy.length==7)
+    assert(listy.length==7) ///length should be the amount of elements in the sequence
 
     var tt = 0
     while (tt < 4) {
@@ -391,6 +391,7 @@ class SortedListTests extends AnyFlatSpec {
     listt.insert(30)
     listt.insert(33)
     listt.insert(31,listt.getRef(2))
+
     assert(listt.length==6)
     assert(listt.getRef(4).value==31)
 

@@ -393,6 +393,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         if (t2.get.value == elem) {
           ch2 += 1
           t2.get.count += 1
+          length += 1
           //nelem.get.prev=t2
           return nelem.get
         }
@@ -561,6 +562,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
          if (t2.get.value == elem) {
            ch2 += 1
            t2.get.count += 1
+           length += 1
            //nelem.get.prev=t2
            return nelem.get
          }
@@ -633,6 +635,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
           if (t2.get.value == elem) {
             ch2 += 1
             t2.get.count += 1
+            length += 1
             //nelem.get.prev=t2
             return nelem.get
           }
@@ -707,6 +710,8 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   {
 
     findRef(ref.value).get.count=findRef(ref.value).get.count -1
+    var ttt = headNode.get.next
+    var last = lastNode.get.prev
 
     if(findRef(ref.value).get.count==0){
     if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev!=None ){
@@ -717,14 +722,16 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       //findRef(ref.value).get.prev=None
       return ref.value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
-      lastNode=findRef(ref.value).get.prev
-      findRef(ref.value).get.prev.get.next=None
+      //lastNode=findRef(ref.value).get.prev
+     findRef(ref.value).get.prev.get.next=None
       findRef(ref.value).get.prev=None
+      lastNode=last
       return ref.value
     }else if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev==None ){
-      headNode=findRef(ref.value).get.next
+      //headNode=findRef(ref.value).get.next
       findRef(ref.value).get.next.get.prev=None
       findRef(ref.value).get.next=None
+      headNode=ttt
       return ref.value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev==None){
       headNode=None
