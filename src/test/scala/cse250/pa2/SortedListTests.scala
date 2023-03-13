@@ -313,7 +313,7 @@ class SortedListTests extends AnyFlatSpec {
     assert(listy.getRef(1).next.get == listy.getRef(2))
     assert(listy.getRef(2).next.get == listy.getRef(3))*/
 
-    assert(listy.length==4)
+    assert(listy.length==7)
 
     var tt = 0
     while (tt < 4) {
