@@ -79,7 +79,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var len: Int = length
     var num: Int = 0
     var ch = 0
-    while (num < len) {
+    while (t!=None) {
       if (t.get.value == elem) {
         ch = ch + 1
         return t
@@ -92,7 +92,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     t = headNode
     num = 0
     if (ch == 0) {
-      while (num < len) {
+      while (t!=None) {
         if (compare(elem, t.get.value) < 0) {
           return t.get.prev
         } else if (t.get.next == None) {
@@ -236,7 +236,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var len: Int = length
     var num: Int = 0
     var ch = 0
-    while (num < len) {
+    while (t!=None) {
       if (t.get.value == elem) {
         ch = ch + 1
         return t
@@ -389,7 +389,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       var ch = 0
       var ch2 = 0
 
-      while (num2 < len) {
+      while (t2!=None) {
         if (t2.get.value == elem) {
           ch2 += 1
           t2.get.count += 1
@@ -398,9 +398,9 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
           return nelem.get
         }
         num2 += 1
-        if (t2.get.next != None) {
+        //if (t2.get.next != None) {
           t2 = t2.get.next
-        }
+        //}
 
       }
       /* t2=headNode
@@ -431,7 +431,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
        } */
 
       if (ch2 == 0) {
-        while (num < len) {
+        while (t!=None) {
           if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
             if (compare(elem, headNode.get.value) < 0) {
               headNode = nelem
@@ -760,7 +760,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def removeN(ref: SortedListNode[T], n: Int): T =
   {
-    if (n>length) {
+    if (n>ref.count) {
       throw new IllegalArgumentException
 
     }
