@@ -292,6 +292,42 @@ class SortedListTests extends AnyFlatSpec {
     assert(list.getRef(0).next.get== list.getRef(1))
     assert(list.getRef(1).next.get== list.getRef(2))
     assert(list.getRef(2).next.get== list.getRef(3))
+
+    /////////////////////////////
+    val listy = new SortedList[Int]()
+    listy.insert(1)
+    listy.insert(30)
+    listy.insert(1)
+    listy.insert(2)
+    listy.insert(30)
+    listy.insert(30)
+    listy.insert(31)
+
+    assert(listy.getRef(0) == listy.getRef(1).prev.get)
+    assert(listy.getRef(1) == listy.getRef(2).prev.get)
+    assert(listy.getRef(2) == listy.getRef(3).prev.get)
+
+    assert(listy.getRef(0).next.get == listy.getRef(1))
+    assert(listy.getRef(1).next.get == listy.getRef(2))
+    assert(listy.getRef(2).next.get == listy.getRef(3))
+    assert(listy.length==4)
+
+    var tt = 0
+    while (tt < 4) {
+
+      if (list.findRef(list(tt)) == list.headNode) {
+        assert(list.findRef(list(tt)).get.prev == None)
+        assert(list.findRef(list(tt)).get.next == list.findRef(list(1)))
+      } else if (list.findRef(list(tt)) == list.lastNode) {
+        assert(list.findRef(list(tt)).get.next == None)
+        assert(list.findRef(list(tt)).get.prev == list.findRef(list(2)))
+      }
+
+      tt += 1
+    }
+
+
+
     //check next and prev and count
     assert(list.findRef(31).get.prev.get.value==30)
     assert(list.findRef(31).get.next==None)
