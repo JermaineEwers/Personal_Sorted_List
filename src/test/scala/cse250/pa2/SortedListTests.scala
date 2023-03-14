@@ -262,6 +262,17 @@ class SortedListTests extends AnyFlatSpec {
   }
 
   it should "be a  insertion" in {
+    val lissst = new SortedList[Int]()
+    lissst.insert(1)
+    lissst.insert(2)
+    lissst.insert(30)
+    lissst.insert(31)
+    lissst.remove(lissst.getRef(2))
+    assert(lissst.length==3)
+   // println(lissst.headNode.get.value)
+
+
+
     val lisst = new SortedList[Int]()
     lisst.insert(1)
     lisst.insert(2)
@@ -276,6 +287,18 @@ class SortedListTests extends AnyFlatSpec {
     assert(lisst.getRef(0).next.get == lisst.getRef(1))
     assert(lisst.getRef(1).next.get == lisst.getRef(2))
     assert(lisst.getRef(2).next.get == lisst.getRef(3))
+
+    lisst.insert(34)
+    assert(lisst.getRef(0) == lisst.getRef(1).prev.get)
+    assert(lisst.getRef(1) == lisst.getRef(2).prev.get)
+    assert(lisst.getRef(2) == lisst.getRef(3).prev.get)
+    assert(lisst.getRef(3) == lisst.getRef(4).prev.get)
+
+    assert(lisst.getRef(0).next.get == lisst.getRef(1))
+    assert(lisst.getRef(1).next.get == lisst.getRef(2))
+    assert(lisst.getRef(2).next.get == lisst.getRef(3))
+    assert(lisst.getRef(3).next.get == lisst.getRef(4))
+
     //println(lisst)
 
 
@@ -305,6 +328,15 @@ class SortedListTests extends AnyFlatSpec {
 
     //println(listy.getRef(2).value)
 
+
+    val listyY = new SortedList[Int]()
+    listyY.insert(17)
+    listyY.insert(19)
+    listyY.insert(19)
+    listyY.insert(19)
+    listyY.insert(19)
+    listyY.insert(21)
+    assert(listyY.length==6)
    /* assert(listy.getRef(0) == listy.getRef(1).prev.get)
     assert(listy.getRef(1) == listy.getRef(2).prev.get)
     assert(listy.getRef(2) == listy.getRef(3).prev.get)

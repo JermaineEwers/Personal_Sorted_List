@@ -844,6 +844,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         headNode = findRef(ref.value).get.next
         findRef(ref.value).get.next.get.prev = None
         findRef(ref.value).get.next = None
+        length=length-rem
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
         headNode = None
