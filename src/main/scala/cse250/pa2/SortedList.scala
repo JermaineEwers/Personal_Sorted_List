@@ -377,6 +377,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 1, None, None))
     //(elem, 0, None, None)
 
+
     if (headNode != None) {
 
       var t = headNode
@@ -497,7 +498,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       }*/
     } else {
       length += 1;
-      headNode = nelem
+      headNode=nelem
       lastNode=nelem
     }
 
@@ -535,8 +536,9 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     if (headNode != None) {
      if(compare(elem, hint.value) > 0) {
-       var t: Option[SortedListNode[T]] = None
-       if (hint.prev != None) {
+       var t: Option[SortedListNode[T]] = Some(hint)
+
+      /* if (hint.prev != None) {
          t = hint.prev.get.next
        } else if (hint.next != None) {
          t = hint.next.get.prev
@@ -544,15 +546,15 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
          t=headNode
        }else if(hint.next==None){
          t=lastNode
-       }
+       }*/
 
 
-       var t2: Option[SortedListNode[T]] = None
-       if (hint.prev != None) {
+       var t2: Option[SortedListNode[T]] =  Some(hint)
+      /* if (hint.prev != None) {
          t2 = hint.prev.get.next
        } else if (hint.next != None) {
          t2 = hint.next.get.prev
-       }
+       }*/
        var len: Int = length + 1
        var num: Int = 0
        var num2: Int = 0
@@ -612,20 +614,20 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
        }
      } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
         //backwards
-        var t: Option[SortedListNode[T]] = None
-        if (hint.prev != None) {
+        var t: Option[SortedListNode[T]] = Some(hint)
+       /* if (hint.prev != None) {
           t = hint.prev.get.next
         } else if (hint.next != None) {
           t = hint.next.get.prev
-        }
+        }*/
 
 
-        var t2: Option[SortedListNode[T]] = None
-        if (hint.prev != None) {
+        var t2: Option[SortedListNode[T]] =Some(hint)
+        /*if (hint.prev != None) {
           t2 = hint.prev.get.next
         } else if (hint.next != None) {
           t2 = hint.next.get.prev
-        }
+        }*/
         var len: Int = length + 1
         var num: Int = 0
         var num2: Int = 0
@@ -725,16 +727,21 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       return ref.value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
       //lastNode=findRef(ref.value).get.prev
-      findRef(ref.value).get.prev=None
-      //findRef(ref.value).get.prev.get.next=None
+      val yu=findRef(ref.value)
+      findRef(ref.value).get.prev.get.next=None
+      yu.get.prev=None
+      //findRef(ref.value).get.prev=None
+
       //findRef(ref.value).get.prev=None
       lastNode=last
       length=length-rem
       return ref.value
     }else if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev==None ){
       //headNode=findRef(ref.value).get.next
-      //findRef(ref.value).get.next.get.prev=None
-      findRef(ref.value).get.next=None
+      val yu=findRef(ref.value)
+      findRef(ref.value).get.next.get.prev=None
+      yu.get.next=None
+      //findRef(ref.value).get.next=None
       headNode=ttt
       length=length-rem
       return ref.value
@@ -788,17 +795,19 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
         //lastNode = findRef(ref.value).get.prev
-        //findRef(ref.value).get.prev.get.next = None
-
-        findRef(ref.value).get.prev = None
+        val yu=findRef(ref.value)
+        findRef(ref.value).get.prev.get.next = None
+yu.get.prev=None
+        //findRef(ref.value).get.prev = None
         length=length-rem
         lastNode = last
         return ref.value
       } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
         //headNode = findRef(ref.value).get.next
-        //findRef(ref.value).get.next.get.prev = None
-
-        findRef(ref.value).get.next = None
+        val yu=findRef(ref.value)
+        findRef(ref.value).get.next.get.prev = None
+yu.get.next=None
+       // findRef(ref.value).get.next = None
         length=length-rem
         headNode = ttt
         return ref.value
@@ -837,16 +846,18 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         //findRef(ref.value).get.prev = None
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
-
-        //findRef(ref.value).get.prev.get.next = None
-        findRef(ref.value).get.prev = None
+        val yu=findRef(ref.value)
+        findRef(ref.value).get.prev.get.next = None
+       yu.get.prev=None
+       // findRef(ref.value).get.prev = None
         lastNode = last
         length=length-rem
         return ref.value
       } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
-
-        //findRef(ref.value).get.next.get.prev = None
-        findRef(ref.value).get.next = None
+        val yu=findRef(ref.value)
+        findRef(ref.value).get.next.get.prev = None
+        yu.get.next=None
+        //findRef(ref.value).get.next = None
         headNode = ttt
         length=length-rem
         return ref.value
