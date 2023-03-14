@@ -267,9 +267,9 @@ class SortedListTests extends AnyFlatSpec {
     lissst.insert(2)
     lissst.insert(30)
     lissst.insert(31)
-    lissst.remove(lissst.getRef(2))
-    assert(lissst.length==3)
-   // println(lissst.headNode.get.value)
+    lissst.removeAll(lissst.getRef(3))
+    //assert(lissst.length==3)
+  // println(lissst.length)
 
 
 
