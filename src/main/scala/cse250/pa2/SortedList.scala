@@ -708,7 +708,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def remove(ref: SortedListNode[T]): T =
   {
-
+    val rem:Int = 1
     findRef(ref.value).get.count=findRef(ref.value).get.count -1
     var ttt = headNode.get.next
     var last = lastNode.get.prev
@@ -720,21 +720,25 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
      // findRef(ref.value).get.next=None
       //findRef(ref.value).get.prev=None
+      length=length-rem
       return ref.value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
       //lastNode=findRef(ref.value).get.prev
      findRef(ref.value).get.prev.get.next=None
       findRef(ref.value).get.prev=None
       lastNode=last
+      length=length-rem
       return ref.value
     }else if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev==None ){
       //headNode=findRef(ref.value).get.next
       findRef(ref.value).get.next.get.prev=None
       findRef(ref.value).get.next=None
       headNode=ttt
+      length=length-rem
       return ref.value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev==None){
       headNode=None
+      length=length-rem
       return ref.value
     }
 
@@ -760,6 +764,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def removeN(ref: SortedListNode[T], n: Int): T =
   {
+    val rem:Int = n
     if (n>ref.count) {
       throw new IllegalArgumentException
 
@@ -777,12 +782,14 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         //findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
         //findRef(ref.value).get.next = None
         //findRef(ref.value).get.prev = None
+        length=length-rem
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
         //lastNode = findRef(ref.value).get.prev
         findRef(ref.value).get.prev.get.next = None
 
         findRef(ref.value).get.prev = None
+        length=length-rem
         lastNode = last
         return ref.value
       } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
@@ -790,10 +797,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         findRef(ref.value).get.next.get.prev = None
 
         findRef(ref.value).get.next = None
+        length=length-rem
         headNode = ttt
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
         headNode = None
+        length=length-rem
         return ref.value
       }
 
@@ -813,13 +822,14 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def removeAll(ref: SortedListNode[T]): T =
   {
+    val rem:Int = findRef(ref.value).get.count
     findRef(ref.value).get.count = 0
 
     if (findRef(ref.value).get.count == 0) {
       if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
         findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
         findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
-
+          length=length-rem
         //findRef(ref.value).get.next = None
         //findRef(ref.value).get.prev = None
         return ref.value
@@ -827,6 +837,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         lastNode = findRef(ref.value).get.prev
         findRef(ref.value).get.prev.get.next = None
         findRef(ref.value).get.prev = None
+        length=length-rem
         return ref.value
       } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
         headNode = findRef(ref.value).get.next
@@ -835,6 +846,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
         headNode = None
+        length=length-rem
         return ref.value
       }
 

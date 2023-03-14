@@ -459,6 +459,7 @@ assert(list2.removeN(list2.headNode.get,2)==1)
     list3.insert(31)
 
     list3.removeAll(list3.headNode.get.next.get)
+    assert(list3.length==2)
     assert(list3.headNode.get.next==list3.lastNode)
     assert(list3(1)==31)
 
