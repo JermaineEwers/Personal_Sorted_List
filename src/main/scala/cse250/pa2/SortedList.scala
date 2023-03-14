@@ -496,10 +496,11 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         }
       }*/
     } else {
+      length += 1;
       headNode = nelem
       lastNode=nelem
     }
-    length += 1;
+
     return nelem.get
 
   }
