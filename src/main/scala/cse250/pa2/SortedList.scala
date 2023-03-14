@@ -752,6 +752,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     }
 
     }
+    length=length-rem
     return ref.value
 
 
@@ -818,6 +819,7 @@ yu.get.next=None
       }
 
     }
+    length=length-rem
     return ref.value
 
 
@@ -868,6 +870,7 @@ yu.get.next=None
       }
 
     }
+    length=length-rem
     return ref.value
   }
 

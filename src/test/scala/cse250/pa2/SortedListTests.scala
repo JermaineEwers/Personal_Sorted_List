@@ -204,6 +204,7 @@ class SortedListTests extends AnyFlatSpec {
     assert(list.getRef(1).prev==list.headNode)
 
 
+
     assert(list.findRefBefore(30).get== list.getRef(2))
 
 
@@ -262,11 +263,19 @@ class SortedListTests extends AnyFlatSpec {
   }
 
   it should "be a  insertion" in {
+
+
+
+
+
     val lissst = new SortedList[Int]()
     lissst.insert(1)
     lissst.insert(2)
     lissst.insert(30)
     lissst.insert(31)
+    lissst.insert(31)
+    lissst.insert(31)
+    println(lissst.length)
     lissst.remove(lissst.getRef(3))
     //assert(lissst.length==3)
    println(lissst.length)
