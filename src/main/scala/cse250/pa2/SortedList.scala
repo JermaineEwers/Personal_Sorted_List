@@ -715,6 +715,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     findRef(ref.value).get.count=findRef(ref.value).get.count -1
     var ttt = headNode.get.next
     var last = lastNode.get.prev
+    val value=ref.value
     val px=findRef(ref.value)
     if(findRef(ref.value).get.count==0){
     if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev!=None ){
@@ -722,10 +723,11 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       findRef(ref.value).get.prev.get.next=findRef(ref.value).get.next
       px.get.prev = None
       px.get.next = None
+
      // findRef(ref.value).get.next=None
       //findRef(ref.value).get.prev=None
       length=length-rem
-      return ref.value
+      return value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
       //lastNode=findRef(ref.value).get.prev
       val yu=findRef(ref.value)
@@ -736,7 +738,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       //findRef(ref.value).get.prev=None
       lastNode=last
       length=length-rem
-      return ref.value
+      return value
     }else if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev==None ){
       //headNode=findRef(ref.value).get.next
       val yu=findRef(ref.value)
@@ -745,16 +747,17 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       //findRef(ref.value).get.next=None
       headNode=ttt
       length=length-rem
-      return ref.value
+      return value
     }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev==None){
       headNode=None
+      lastNode=None
       length=length-rem
-      return ref.value
+      return value
     }
 
     }
     length=length-rem
-    return ref.value
+    return value
 
 
   }
@@ -817,6 +820,7 @@ yu.get.next=None
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
         headNode = None
+        lastNode=None
         length=length-rem
         return ref.value
       }
@@ -871,6 +875,7 @@ yu.get.next=None
         return ref.value
       } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
         headNode = None
+        lastNode=None
         length=length-rem
         return ref.value
       }
