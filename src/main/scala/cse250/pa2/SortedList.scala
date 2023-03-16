@@ -715,12 +715,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     findRef(ref.value).get.count=findRef(ref.value).get.count -1
     var ttt = headNode.get.next
     var last = lastNode.get.prev
-
+    val px=findRef(ref.value)
     if(findRef(ref.value).get.count==0){
     if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev!=None ){
       findRef(ref.value).get.next.get.prev=findRef(ref.value).get.prev
       findRef(ref.value).get.prev.get.next=findRef(ref.value).get.next
-
+      px.get.prev = None
+      px.get.next = None
      // findRef(ref.value).get.next=None
       //findRef(ref.value).get.prev=None
       length=length-rem
@@ -782,13 +783,15 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
      var ttt=headNode.get.next
     var last=lastNode.get.prev
-
+    val px=findRef(ref.value)
     findRef(ref.value).get.count = findRef(ref.value).get.count - n
 
     if (findRef(ref.value).get.count == 0) {
       if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
         findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
         findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+        px.get.prev = None
+        px.get.next = None
         //findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
         //findRef(ref.value).get.next = None
         //findRef(ref.value).get.prev = None
@@ -839,10 +842,13 @@ yu.get.next=None
     findRef(ref.value).get.count = 0
     var ttt = headNode.get.next
     var last = lastNode.get.prev
+    val px=findRef(ref.value)
     if (findRef(ref.value).get.count == 0) {
       if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
         findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
         findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+        px.get.prev=None
+        px.get.next=None
           length=length-rem
         //findRef(ref.value).get.next = None
         //findRef(ref.value).get.prev = None

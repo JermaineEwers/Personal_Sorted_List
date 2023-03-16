@@ -446,6 +446,21 @@ class SortedListTests extends AnyFlatSpec {
   }
 
   it should "be a  remove" in {
+
+    val lists5 = new SortedList[Int]()
+    lists5.insert(1)
+    lists5.insert(1)
+    lists5.insert(2)
+    lists5.insert(3)
+    val check=lists5.headNode.get.next
+
+
+    lists5.removeAll(lists5.getRef(1))
+    assert(check.get.prev==None)
+    assert(check.get.next==None)
+    //println(Some(check.get.prev))
+    //println(Some(check.get.next))
+
     val list = new SortedList[Int]()
 
     list.insert(1)
@@ -505,6 +520,7 @@ assert(list2.removeN(list2.headNode.get,2)==1)
     assert(list3(1)==31)
 
   }
+
 
 
 }
