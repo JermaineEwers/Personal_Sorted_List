@@ -242,7 +242,7 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(31)
     assert(list.getRef(0)==list.headNode.get)
     assert(list.getRef(0).next.get==list.headNode.get.next.get)
-
+    //Cite-->https://www.scalatest.org/user_guide/writing_your_first_test
    assertThrows[IndexOutOfBoundsException]{list.getRef(-1)}
     assertThrows[IndexOutOfBoundsException]{list.getRef(6)}
   }
@@ -253,6 +253,7 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(2)
     list.insert(30)
     list.insert(31)
+    //Cite-->https://www.scalatest.org/user_guide/writing_your_first_test
     assertThrows[IndexOutOfBoundsException] {
       list.getRef(-1)
     }

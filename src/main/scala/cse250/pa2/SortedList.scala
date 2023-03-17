@@ -316,6 +316,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def getRef(idx: Int): SortedListNode[T] = {
     if (idx < 0 || idx >= length) {
+      //"Throws"-->Cite: The Scala API
       throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
 
     }
@@ -349,6 +350,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def apply(idx: Int): T = {
     if (idx < 0 || idx >= length) {
+      //"Throws"-->Cite: The Scala API
       throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
 
     }
@@ -396,7 +398,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
           t2.get.count += 1
           length += 1
           //nelem.get.prev=t2
-          return nelem.get
+          return t2.get
         }
         num2 += 1
         //if (t2.get.next != None) {
@@ -437,6 +439,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
             if (compare(elem, headNode.get.value) < 0) {
               headNode = nelem
             }
+
             nelem.get.next = t
             nelem.get.prev = None
             t.get.prev = nelem
@@ -567,7 +570,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
            t2.get.count += 1
            length += 1
            //nelem.get.prev=t2
-           return nelem.get
+           return t2.get
          }
          num2 += 1
 
@@ -640,7 +643,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
             t2.get.count += 1
             length += 1
             //nelem.get.prev=t2
-            return nelem.get
+            return t2.get
           }
           num2 += 1
 
@@ -780,7 +783,8 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   {
     val rem:Int = n
     if (n>ref.count) {
-      throw new IllegalArgumentException //I figured this out by experimenting with multiple different things
+      //"Throws"-->Cite: The Scala API
+      throw new IllegalArgumentException//I figured this out by experimenting with multiple different things
 
     }
 
