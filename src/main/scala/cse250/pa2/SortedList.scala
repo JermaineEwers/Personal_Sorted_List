@@ -653,7 +653,17 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
         if (ch2 == 0) {
           while (t != None) {
-            if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
+            if(t.get.prev!=None){
+            if(compare(elem, t.get.value) < 0 && compare(elem, t.get.prev.get.value) > 0){
+              nelem.get.next = t
+              nelem.get.prev = t.get.prev
+              t.get.prev.get.next = nelem
+              t.get.prev = nelem
+              //t.get.next = None
+              length += 1
+              return nelem.get
+            }}
+            else if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
               if (compare(elem, headNode.get.value) < 0) {
                 headNode = nelem
               }
@@ -663,7 +673,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
               //t.get.next=None
               length += 1
               return nelem.get
-            } else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
+            } /*else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
 
               nelem.get.next = t
               nelem.get.prev = t.get.prev
@@ -682,7 +692,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
               lastNode = nelem
               length += 1
               return nelem.get
-            }
+            }*/
             t = t.get.prev
             num += 1
           }

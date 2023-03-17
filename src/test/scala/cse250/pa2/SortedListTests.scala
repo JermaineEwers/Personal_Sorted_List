@@ -433,9 +433,11 @@ class SortedListTests extends AnyFlatSpec {
     listt.insert(30)
     listt.insert(33)
     listt.insert(31,listt.getRef(2))
-
-    assert(listt.length==6)
-    assert(listt.getRef(4).value==31)
+    listt.insert(0,listt.getRef(4))
+    println("checking thisVVVVV")
+    println(Some(listt))
+    assert(listt.length==7)
+    assert(listt.getRef(5).value==31)
 
 
     val listtt = new SortedList[Int]()
