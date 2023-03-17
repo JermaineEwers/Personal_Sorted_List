@@ -316,7 +316,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def getRef(idx: Int): SortedListNode[T] = {
     if (idx < 0 || idx >= length) {
-      throw new IndexOutOfBoundsException
+      throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
 
     }
     var ret: SortedListNode[T] = headNode.get
@@ -349,7 +349,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    */
   def apply(idx: Int): T = {
     if (idx < 0 || idx >= length) {
-      throw new IndexOutOfBoundsException
+      throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
 
     }
     return getRef(idx).value
@@ -780,7 +780,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   {
     val rem:Int = n
     if (n>ref.count) {
-      throw new IllegalArgumentException
+      throw new IllegalArgumentException //I figured this out by experimenting with multiple different things
 
     }
 
