@@ -28,14 +28,12 @@ class SortedListTests extends AnyFlatSpec {
 
 
   behavior of "SortedList"
-  it should "insert reverse-order elements in order" in 
-  {
-    val list = new SortedList[Int]()  
+  it should "insert reverse-order elements in order" in {
+    val list = new SortedList[Int]()
 
     // Inserting in reverse order should always insert at the head
 
-    for(i <- Seq.range(start = 9, end = -1, step = -1) )
-    { 
+    for (i <- Seq.range(start = 9, end = -1, step = -1)) {
       list.insert(i)
     }
 
@@ -46,20 +44,17 @@ class SortedListTests extends AnyFlatSpec {
     // range (-1, 9] == [0, 9] == [0, 10), every element should
     // be located at its index. 
 
-    for((elem, index) <- list.zipWithIndex)
-    {
+    for ((elem, index) <- list.zipWithIndex) {
       assert(elem == index)
     }
   }
 
-  it should "insert in-order elements in order" in 
-  {
-    val list = new SortedList[Int]()  
+  it should "insert in-order elements in order" in {
+    val list = new SortedList[Int]()
 
     // Inserting in order should always insert at the tail
 
-    for(i <- 0 until 10)
-    { 
+    for (i <- 0 until 10) {
       list.insert(i)
     }
 
@@ -69,20 +64,17 @@ class SortedListTests extends AnyFlatSpec {
     // constructed.  Since we've inserted every element in the
     // range [0, 10), every element should be located at its index.
 
-    for((elem, index) <- list.zipWithIndex)
-    {
+    for ((elem, index) <- list.zipWithIndex) {
       assert(elem == index)
     }
   }
 
-  it should "insert random-order elements in order" in 
-  {
-    val list = new SortedList[Int]()  
+  it should "insert random-order elements in order" in {
+    val list = new SortedList[Int]()
 
     // Inserting in random order should test all of the other cases of insert
 
-    for(i <- SeededRandom.shuffle(IndexedSeq.range(start = 0, end = 30)) )
-    { 
+    for (i <- SeededRandom.shuffle(IndexedSeq.range(start = 0, end = 30))) {
       list.insert(i)
     }
 
@@ -92,8 +84,7 @@ class SortedListTests extends AnyFlatSpec {
     // constructed.  Since we've inserted every element in the
     // range [0, 30), every element should be located at its index.
 
-    for((elem, index) <- list.zipWithIndex)
-    {
+    for ((elem, index) <- list.zipWithIndex) {
       assert(elem == index)
     }
 
@@ -101,15 +92,13 @@ class SortedListTests extends AnyFlatSpec {
     // the apply method by checking to see if the element at that index
     // is equal to the index (following the same logic as the last test).
 
-    for(index <- SeededRandom.shuffle(IndexedSeq.range(start = 0, end = 30)).take(10))
-    {
+    for (index <- SeededRandom.shuffle(IndexedSeq.range(start = 0, end = 30)).take(10)) {
       assert(list(index) == index)
     }
   }
 
-  it should "insert in-order elements with hints" in
-  {
-    val list = new SortedList[Int]()  
+  it should "insert in-order elements with hints" in {
+    val list = new SortedList[Int]()
 
     // The hinted version of the for loop should be quite a bit faster
     // for in-order insertions if we pass in a "hint" pointing at the
@@ -118,18 +107,22 @@ class SortedListTests extends AnyFlatSpec {
     // of the hinted insert.
 
     var tail = list.insert(0)
-    for(i <- 1 until 100)
-    { 
+    for (i <- 1 until 100) {
       tail = list.insert(i, tail)
     }
 
     // Test using the same logic as above
 
-    for((elem, index) <- list.zipWithIndex)
-    {
+    for ((elem, index) <- list.zipWithIndex) {
       assert(elem == index)
     }
   }
+
+
+
+
+
+
 
   it should "efficiently update elements" in
   {

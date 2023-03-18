@@ -207,12 +207,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         }
       }
     } else if (compare(elem, hint.value) == 0) {
-      var ttt: Option[SortedListNode[T]] = None
-      if (hint.prev != None) {
+      var ttt: Option[SortedListNode[T]] = Some(hint)
+    /*  if (hint.prev != None) {
         ttt = hint.prev.get.next
       } else if (hint.next != None) {
         ttt = hint.next.get.prev
-      }
+      }*/
       return ttt
     }
 
@@ -261,12 +261,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   def findRef(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] = {
     if (compare(elem, hint.value) > 0) {
       //forward
-      var t: Option[SortedListNode[T]] = None
-      if (hint.prev != None) {
+      var t: Option[SortedListNode[T]] = Some(hint)
+     /* if (hint.prev != None) {
         t = hint.prev.get.next
       } else if (hint.next != None) {
         t = hint.next.get.prev
-      }
+      }*/
       var len: Int = length
       var num: Int = 0
       var ch = 0
@@ -281,13 +281,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
       //going backwards
-      var tt: Option[SortedListNode[T]] = None
+      var tt: Option[SortedListNode[T]] = Some(hint)
       var ch2 = 0
-      if (hint.prev != None) {
+     /* if (hint.prev != None) {
         tt = hint.prev.get.next
       } else if (hint.next != None) {
         tt = hint.next.get.prev
-      }
+      }*/
 
       while (tt != None) {
         if (tt.get.value == elem) {
@@ -744,15 +744,20 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   def remove(ref: SortedListNode[T]): T =
   {
     val rem:Int = 1
-    findRef(ref.value).get.count=findRef(ref.value).get.count -1
+
+    var tt = this
+    var y = Some(tt).value.toList
+
+
+    findRefBefore(ref.value,ref).get.count=findRefBefore(ref.value,ref).get.count -1
     var ttt = headNode.get.next
     var last = lastNode.get.prev
     val value=ref.value
-    val px=findRef(ref.value)
-    if(findRef(ref.value).get.count==0){
-    if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev!=None ){
-      findRef(ref.value).get.next.get.prev=findRef(ref.value).get.prev
-      findRef(ref.value).get.prev.get.next=findRef(ref.value).get.next
+    val px=findRefBefore(ref.value,ref)
+    if(findRefBefore(ref.value,ref).get.count==0){
+    if(findRefBefore(ref.value,ref).get.next!=None  && findRefBefore(ref.value,ref).get.prev!=None ){
+      findRefBefore(ref.value,ref).get.next.get.prev=findRefBefore(ref.value,ref).get.prev
+      findRefBefore(ref.value,ref).get.prev.get.next=findRefBefore(ref.value,ref).get.next
       px.get.prev = None
       px.get.next = None
 
@@ -760,10 +765,10 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       //findRef(ref.value).get.prev=None
       length=length-rem
       return value
-    }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev!=None ){
+    }else if(findRefBefore(ref.value,ref).get.next==None  && findRefBefore(ref.value,ref).get.prev!=None ){
       //lastNode=findRef(ref.value).get.prev
-      val yu=findRef(ref.value)
-      findRef(ref.value).get.prev.get.next=None
+      val yu=findRefBefore(ref.value,ref)
+      findRefBefore(ref.value,ref).get.prev.get.next=None
       yu.get.prev=None
       //findRef(ref.value).get.prev=None
 
@@ -771,16 +776,16 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       lastNode=last
       length=length-rem
       return value
-    }else if(findRef(ref.value).get.next!=None  && findRef(ref.value).get.prev==None ){
+    }else if(findRefBefore(ref.value,ref).get.next!=None  && findRefBefore(ref.value,ref).get.prev==None ){
       //headNode=findRef(ref.value).get.next
-      val yu=findRef(ref.value)
-      findRef(ref.value).get.next.get.prev=None
+      val yu=findRefBefore(ref.value,ref)
+      findRefBefore(ref.value,ref).get.next.get.prev=None
       yu.get.next=None
       //findRef(ref.value).get.next=None
       headNode=ttt
       length=length-rem
       return value
-    }else if(findRef(ref.value).get.next==None  && findRef(ref.value).get.prev==None){
+    }else if(findRefBefore(ref.value,ref).get.next==None  && findRefBefore(ref.value,ref).get.prev==None){
       headNode=None
       lastNode=None
       length=length-rem
@@ -819,13 +824,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
      var ttt=headNode.get.next
     var last=lastNode.get.prev
-    val px=findRef(ref.value)
-    findRef(ref.value).get.count = findRef(ref.value).get.count - n
+    val px=findRefBefore(ref.value,ref)
+    findRefBefore(ref.value,ref).get.count = findRefBefore(ref.value,ref).get.count - n
 
-    if (findRef(ref.value).get.count == 0) {
-      if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
-        findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
-        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+    if (findRefBefore(ref.value,ref).get.count == 0) {
+      if (findRefBefore(ref.value,ref).get.next != None &&findRefBefore(ref.value,ref).get.prev != None) {
+        findRefBefore(ref.value,ref).get.next.get.prev = findRefBefore(ref.value,ref).get.prev
+        findRefBefore(ref.value,ref).get.prev.get.next = findRefBefore(ref.value,ref).get.next
         px.get.prev = None
         px.get.next = None
         //findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
@@ -833,25 +838,25 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         //findRef(ref.value).get.prev = None
         length=length-rem
         return ref.value
-      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
+      } else if (findRefBefore(ref.value,ref).get.next == None && findRefBefore(ref.value,ref).get.prev != None) {
         //lastNode = findRef(ref.value).get.prev
-        val yu=findRef(ref.value)
-        findRef(ref.value).get.prev.get.next = None
+        val yu=findRefBefore(ref.value,ref)
+        findRefBefore(ref.value,ref).get.prev.get.next = None
 yu.get.prev=None
         //findRef(ref.value).get.prev = None
         length=length-rem
         lastNode = last
         return ref.value
-      } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
+      } else if (findRefBefore(ref.value,ref).get.next != None && findRefBefore(ref.value,ref).get.prev == None) {
         //headNode = findRef(ref.value).get.next
-        val yu=findRef(ref.value)
-        findRef(ref.value).get.next.get.prev = None
+        val yu=findRefBefore(ref.value,ref)
+        findRefBefore(ref.value,ref).get.next.get.prev = None
 yu.get.next=None
        // findRef(ref.value).get.next = None
         length=length-rem
         headNode = ttt
         return ref.value
-      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
+      } else if (findRefBefore(ref.value,ref).get.next == None && findRefBefore(ref.value,ref).get.prev == None) {
         headNode = None
         lastNode=None
         length=length-rem
@@ -875,38 +880,38 @@ yu.get.next=None
    */
   def removeAll(ref: SortedListNode[T]): T =
   {
-    val rem:Int = findRef(ref.value).get.count
-    findRef(ref.value).get.count = 0
+    val rem:Int = findRefBefore(ref.value,ref).get.count
+    findRefBefore(ref.value,ref).get.count = 0
     var ttt = headNode.get.next
     var last = lastNode.get.prev
-    val px=findRef(ref.value)
-    if (findRef(ref.value).get.count == 0) {
-      if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev != None) {
-        findRef(ref.value).get.next.get.prev = findRef(ref.value).get.prev
-        findRef(ref.value).get.prev.get.next = findRef(ref.value).get.next
+    val px=findRefBefore(ref.value,ref)
+    if (findRefBefore(ref.value,ref).get.count == 0) {
+      if (findRefBefore(ref.value,ref).get.next != None && findRefBefore(ref.value,ref).get.prev != None) {
+        findRefBefore(ref.value,ref).get.next.get.prev = findRefBefore(ref.value,ref).get.prev
+        findRefBefore(ref.value,ref).get.prev.get.next = findRefBefore(ref.value,ref).get.next
         px.get.prev=None
         px.get.next=None
           length=length-rem
         //findRef(ref.value).get.next = None
         //findRef(ref.value).get.prev = None
         return ref.value
-      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev != None) {
-        val yu=findRef(ref.value)
-        findRef(ref.value).get.prev.get.next = None
+      } else if (findRefBefore(ref.value,ref).get.next == None && findRefBefore(ref.value,ref).get.prev != None) {
+        val yu=findRefBefore(ref.value,ref)
+        findRefBefore(ref.value,ref).get.prev.get.next = None
        yu.get.prev=None
        // findRef(ref.value).get.prev = None
         lastNode = last
         length=length-rem
         return ref.value
-      } else if (findRef(ref.value).get.next != None && findRef(ref.value).get.prev == None) {
-        val yu=findRef(ref.value)
-        findRef(ref.value).get.next.get.prev = None
+      } else if (findRefBefore(ref.value,ref).get.next != None && findRefBefore(ref.value,ref).get.prev == None) {
+        val yu=findRefBefore(ref.value,ref)
+        findRefBefore(ref.value,ref).get.next.get.prev = None
         yu.get.next=None
         //findRef(ref.value).get.next = None
         headNode = ttt
         length=length-rem
         return ref.value
-      } else if (findRef(ref.value).get.next == None && findRef(ref.value).get.prev == None) {
+      } else if (findRefBefore(ref.value,ref).get.next == None && findRefBefore(ref.value,ref).get.prev == None) {
         headNode = None
         lastNode=None
         length=length-rem
