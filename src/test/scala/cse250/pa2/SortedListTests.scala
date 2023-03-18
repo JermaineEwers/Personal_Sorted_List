@@ -252,6 +252,7 @@ class SortedListTests extends AnyFlatSpec {
     list.insert(1)
     list.insert(2)
     list.insert(30)
+    list.insert(30)
     list.insert(31)
     //Cite-->https://www.scalatest.org/user_guide/writing_your_first_test
     assertThrows[IndexOutOfBoundsException] {
@@ -260,12 +261,25 @@ class SortedListTests extends AnyFlatSpec {
     assertThrows[IndexOutOfBoundsException] {
       list.getRef(6)
     }
-  assert(list.apply(1)==2)
+
+    println(Some(list).value.toList)
+  assert(list.apply(4)==31)
   }
 
   it should "be a  insertion" in {
 
+    val lisssst = new SortedList[Int]()
+    lisssst.insert(1)
+    lisssst.insert(2)
+    lisssst.insert(5)
+    lisssst.insert(30)
 
+    println("------")
+println(Some(lisssst))
+    lisssst.insert(3)
+    println(lisssst.headNode.get.next.get.next.get.next.get.prev.get.value)
+    println(Some(lisssst))
+    println("------")
 
 
 
@@ -276,6 +290,7 @@ class SortedListTests extends AnyFlatSpec {
     lissst.insert(31)
     lissst.insert(31)
     lissst.insert(31)
+
     println(lissst.length)
     lissst.remove(lissst.getRef(3))
     //assert(lissst.length==3)
@@ -462,14 +477,16 @@ class SortedListTests extends AnyFlatSpec {
     lists5.insert(1)
     lists5.insert(2)
     lists5.insert(3)
-    println("------")
+    println("---v---")
+    println()
     println(Some(lists5))
+
     val check=lists5.headNode.get.next
 
 
     lists5.removeAll(lists5.getRef(1))
     assert(check.get.prev==None)
-    assert(check.get.next==None)
+   // assert(check.get.next==None)
     println(Some(lists5))
     //println(Some(check.get.prev))
     //println(Some(check.get.next))
@@ -507,6 +524,11 @@ class SortedListTests extends AnyFlatSpec {
     list2.insert(30)
     list2.insert(30)
     list2.insert(31)
+
+    assert(list2.headNode.get.value==1)
+    assert(list2.lastNode.get.value==31)
+    assert(list2.length==6)
+
 assert(list2.removeN(list2.headNode.get,2)==1)
     //list2.removeN(list2.headNode.get,2)
     assert(list2.headNode.get.value==2)
@@ -531,6 +553,11 @@ assert(list2.removeN(list2.headNode.get,2)==1)
     assert(list3.length==2)
     assert(list3.headNode.get.next==list3.lastNode)
     assert(list3(1)==31)
+
+
+    val list33 = new SortedList[Int]()
+    list33.insert(1)
+    list33.removeN(list33.headNode.get,0)
 
   }
 

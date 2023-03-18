@@ -323,10 +323,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var ret: SortedListNode[T] = headNode.get
     var t = headNode
 
+
+
     var len: Int = idx
     var num: Int = 0
     var ch = 0
-    while (num <= len) {
+    /*while (num <= len) {
       if (num == len) {
 
         ret = t.get
@@ -334,9 +336,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       }
       t = t.get.next
       num += 1
-    }
+    }*/
 
     ret
+    var tt = this
+    var y = Some(tt).value.toList
+
+    return findRef(y(idx)).get
   }
 
   /**
@@ -354,7 +360,20 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
 
     }
-    return getRef(idx).value
+    var i:Int=0
+    var tt=this
+    var y=Some(tt).value.toList
+
+    while(i<length){
+      if(i==idx){
+
+      //return tt.get.value
+      }
+     // tt= this.headNode.get.next
+      i+=1
+    }
+  return y(idx)
+
   }
 
   /**
@@ -376,7 +395,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    *         This function should run in O(length)
    */
   def insert(elem: T): SortedListNode[T] = {
-    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 1, None, None))
+    var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 1,None,None))
     //(elem, 0, None, None)
 
 
