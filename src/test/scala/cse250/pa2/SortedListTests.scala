@@ -162,6 +162,11 @@ class SortedListTests extends AnyFlatSpec {
     }
   }
 
+
+
+
+
+
   it should "be a linked list" in
   {
     val list = new SortedList[Int]()  
@@ -260,6 +265,16 @@ class SortedListTests extends AnyFlatSpec {
   }
 
   it should "be a  insertion" in {
+
+    val lisssst4 = new SortedList[Int]()
+    lisssst4.insert(1)
+    lisssst4.insert(2)
+    lisssst4.insert(2)
+    lisssst4.insert(30)
+    lisssst4.insert(0,lisssst4.headNode.get)
+
+
+
 
     val lisssst = new SortedList[Int]()
     lisssst.insert(1)

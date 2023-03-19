@@ -1,4 +1,5 @@
 package cse250.pa2
+
 /**
  * cse250.pa2.Main
  *
@@ -21,6 +22,7 @@ object Main
     // Think about how the details of our runtime affects the runtime of these loops
     // These loops should run very fast...if they do not, your implementation might
     // not match the specifications.
+
     println("Rolling a d20 1000000 times")
     val rolls = new SortedList[Int]
     for (i <- 0 until 1000000) {

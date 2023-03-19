@@ -666,7 +666,8 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
            num += 1
          }
        }
-     } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
+     } else if (compare(elem, hint.value) < 0 ) {
+
         //backwards
         var t: Option[SortedListNode[T]] = Some(hint)
        /* if (hint.prev != None) {
@@ -682,6 +683,19 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         } else if (hint.next != None) {
           t2 = hint.next.get.prev
         }*/
+
+       if (compare(headNode.get.value, hint.value) == 0) {
+
+           headNode = nelem
+
+         nelem.get.next = t
+         nelem.get.prev = None
+         t.get.prev = nelem
+         //t.get.next=None
+         length += 1
+         return nelem.get
+       }
+
         var len: Int = length + 1
         var num: Int = 0
         var num2: Int = 0
@@ -714,7 +728,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
               length += 1
               return nelem.get
             }}
-            else if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
+            else if (compare(elem, t.get.value) < 0 ) {
               if (compare(elem, headNode.get.value) < 0) {
                 headNode = nelem
               }
