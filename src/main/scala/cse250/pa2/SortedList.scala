@@ -134,6 +134,8 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   def findRefBefore(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] = {
     if (compare(elem, headNode.get.value) < 0) {
       return None
+    }else if(compare(elem,hint.value)==0){
+      return Some(hint)
     }
 
     if (compare(elem, hint.value) > 0) {
@@ -273,6 +275,11 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
    *         This function should run in O(length)
    */
   def findRef(elem: T, hint: SortedListNode[T]): Option[SortedListNode[T]] = {
+
+    if(compare(elem,hint.value)==0){
+      return Some(hint)
+    }
+
     if (compare(elem, hint.value) > 0) {
       //forward
       var t: Option[SortedListNode[T]] = Some(hint)
@@ -569,7 +576,15 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var nelem = Option[SortedListNode[T]](new SortedListNode[T](elem, 1, None, None))
     //(elem, 0, None, None)
 
+
+
     if (headNode != None) {
+      if(compare(elem,hint.value)==0){
+        hint.count+=1
+        length += 1
+        return hint
+      }
+
      if(compare(elem, hint.value) > 0) {
        var t: Option[SortedListNode[T]] = Some(hint)
 
@@ -1002,8 +1017,8 @@ yu.get.next=None
     var ttt = headNode.get.next
     var last = lastNode.get.prev
     val px=Some(ref)
-val count= ref.count
-val value =ref.value
+    val count= ref.count
+    val value =ref.value
 
     if (count == 0) {
       if (ref.next != None && ref.prev != None) {
