@@ -79,7 +79,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var len: Int = length
     var num: Int = 0
     var ch = 0
-    while (t!=None) {
+   /* while (t!=None) {
       if (t.get.value == elem) {
         ch = ch + 1
         return t
@@ -87,13 +87,16 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       num += 1
       t = t.get.next
 
-    }
+    }*/
 
     t = headNode
     num = 0
     if (ch == 0) {
       while (t!=None) {
-        if (compare(elem, t.get.value) < 0) {
+        if (compare(t.get.value,elem)==0) {
+          ch = ch + 1
+          return t
+        }else if (compare(elem, t.get.value) < 0) {
           return t.get.prev
         } else if (t.get.next == None) {
           return t
@@ -144,14 +147,15 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       var len: Int = length
       var num: Int = 0
       var ch = 0
-      while (t != None) {
+
+      /*while (t != None) {
         if (t.get.value == elem) {
           ch = ch + 1
           return t
         }
         t = t.get.next
         num += 1
-      }
+      }*/
 
     /*  if (hint.prev != None) {
         t = hint.prev.get.next
@@ -164,7 +168,10 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
       if (ch == 0) {
         while (t != None) {
-          if (compare(elem, t.get.value) < 0) {
+          if (compare(t.get.value,elem)==0) {
+           // ch = ch + 1
+            return t
+          }else if (compare(elem, t.get.value) < 0) {
             return t
           } else if (t.get.next == None) {
             return t
@@ -184,13 +191,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         tt = hint.next.get.prev
       }*/
 
-      while (tt != None) {
+      /*while (tt != None) {
         if (tt.get.value == elem) {
           ch2 = ch2 + 1
           return tt
         }
         tt = tt.get.prev
-      }
+      }*/
 
      /* if (hint.prev != None) {
         tt = hint.prev.get.next
@@ -201,7 +208,10 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
       if (ch2 == 0) {
         while (tt != None) {
-          if (compare(elem, tt.get.value) > 0) {
+          if (compare(tt.get.value, elem) == 0) {
+            // ch = ch + 1
+            return tt
+          }else if (compare(elem, tt.get.value) > 0) {
             return tt
           } else if (tt.get.next == None) {
             return tt
@@ -415,7 +425,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       var ch = 0
       var ch2 = 0
 
-      while (t2!=None) {
+      /*while (t2!=None) {
         if (t2.get.value == elem) {
           ch2 += 1
           t2.get.count += 1
@@ -428,7 +438,9 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
           t2 = t2.get.next
         //}
 
-      }
+      }*/
+
+
       /* t2=headNode
        num2=0
        while (num2 < len) {
@@ -489,6 +501,10 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
             length += 1
             return nelem.get
 
+          } else if (compare(t.get.value, elem) == 0) {
+            t.get.count += 1
+            length += 1
+            return t.get
           } /*else if (compare(elem, t.get.value) > 0 && t.get.next!=None){
           nelem.get.prev=t
           t.get.next.get.prev=nelem
@@ -587,7 +603,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
        var ch = 0
        var ch2 = 0
 
-       while (t2 != None) {
+      /* while (t2 != None) {
          if (t2.get.value == elem) {
            ch2 += 1
            t2.get.count += 1
@@ -599,12 +615,16 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
            t2 = t2.get.next
 
-       }
+       }*/
 
        if (ch2 == 0) {
 
          while (t != None) {
-           if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
+           if(compare(t.get.value,elem)==0){
+             t.get.count+=1
+             length += 1
+             return t.get
+           } else if (compare(elem, t.get.value) < 0 && t.get.prev == None) {
              if (compare(elem, headNode.get.value) < 0) {
                headNode = nelem
              }
@@ -660,7 +680,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         var ch = 0
         var ch2 = 0
 
-        while (t2 != None) {
+        /*while (t2 != None) {
           if (t2.get.value == elem) {
             ch2 += 1
             t2.get.count += 1
@@ -672,7 +692,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
           t2 = t2.get.prev
 
-        }
+        }*/
 
         if (ch2 == 0) {
           while (t != None) {
@@ -696,7 +716,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
               //t.get.next=None
               length += 1
               return nelem.get
-            } /*else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
+            }else if (compare(t.get.value, elem) == 0) {
+              t.get.count += 1
+              length += 1
+              return t.get
+            }
+            /*else if (compare(elem, t.get.value) < 0 && t.get.prev != None) {
 
               nelem.get.next = t
               nelem.get.prev = t.get.prev
