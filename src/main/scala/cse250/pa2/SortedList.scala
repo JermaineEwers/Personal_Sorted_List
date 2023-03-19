@@ -135,12 +135,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     if (compare(elem, hint.value) > 0) {
       //forward
-      var t: Option[SortedListNode[T]] = None
-      if (hint.prev != None) {
+      var t: Option[SortedListNode[T]] = Some(hint)
+      /*if (hint.prev != None) {
         t = hint.prev.get.next
       } else if (hint.next != None) {
         t = hint.next.get.prev
-      }
+      }*/
       var len: Int = length
       var num: Int = 0
       var ch = 0
@@ -153,11 +153,14 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         num += 1
       }
 
-      if (hint.prev != None) {
+    /*  if (hint.prev != None) {
         t = hint.prev.get.next
       } else if (hint.next != None) {
         t = hint.next.get.prev
-      }
+      }*/
+      t=Some(hint)
+
+
 
       if (ch == 0) {
         while (t != None) {
@@ -173,13 +176,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
 
     } else if (compare(elem, hint.value) < 0 && hint.prev != None) {
       //going backwards
-      var tt: Option[SortedListNode[T]] = None
+      var tt: Option[SortedListNode[T]] = Some(hint)
       var ch2 = 0
-      if (hint.prev != None) {
+      /*if (hint.prev != None) {
         tt = hint.prev.get.next
       } else if (hint.next != None) {
         tt = hint.next.get.prev
-      }
+      }*/
 
       while (tt != None) {
         if (tt.get.value == elem) {
@@ -189,11 +192,12 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
         tt = tt.get.prev
       }
 
-      if (hint.prev != None) {
+     /* if (hint.prev != None) {
         tt = hint.prev.get.next
       } else if (hint.next != None) {
         tt = hint.next.get.prev
-      }
+      }*/
+      tt=Some(hint)
 
       if (ch2 == 0) {
         while (tt != None) {
@@ -317,7 +321,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   def getRef(idx: Int): SortedListNode[T] = {
     if (idx < 0 || idx >= length) {
       //"Throws"-->Cite: The Scala API
-      throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
+      throw new IndexOutOfBoundsException() //I figured this out by experimenting with  multiple different things
 
     }
     var ret: SortedListNode[T] = headNode.get
@@ -357,7 +361,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
   def apply(idx: Int): T = {
     if (idx < 0 || idx >= length) {
       //"Throws"-->Cite: The Scala API
-      throw new IndexOutOfBoundsException //I figured this out by experimenting with  multiple different things
+      throw new IndexOutOfBoundsException() //I figured this out by experimenting with  multiple different things
 
     }
     var i:Int=0
@@ -749,12 +753,57 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var y = Some(tt).value.toList
 
 
-    findRefBefore(ref.value,ref).get.count=findRefBefore(ref.value,ref).get.count -1
+    //findRefBefore(ref.value,ref).get.count=findRefBefore(ref.value,ref).get.count -1
+    ref.count=ref.count-1
     var ttt = headNode.get.next
     var last = lastNode.get.prev
     val value=ref.value
-    val px=findRefBefore(ref.value,ref)
-    if(findRefBefore(ref.value,ref).get.count==0){
+   // val px=findRefBefore(ref.value,ref)
+    val px=Some(ref)
+   // val count=findRefBefore(ref.value,ref).get.count
+    val count=ref.count
+    if(count==0){
+      if (ref.next != None && ref.prev != None) {
+        ref.next.get.prev = ref.prev
+        ref.prev.get.next = ref.next
+        px.get.prev = None
+        px.get.next = None
+
+        // findRef(ref.value).get.next=None
+        //findRef(ref.value).get.prev=None
+        length = length - rem
+        return value
+      } else if (ref.next == None && ref.prev != None) {
+        //lastNode=findRef(ref.value).get.prev
+        val yu = ref
+        ref.prev.get.next = None
+        yu.prev = None
+        //findRef(ref.value).get.prev=None
+
+        //findRef(ref.value).get.prev=None
+        lastNode = last
+        length = length - rem
+        return value
+      } else if (ref.next != None && ref.prev == None) {
+        //headNode=findRef(ref.value).get.next
+        val yu = ref
+        ref.next.get.prev = None
+        yu.next = None
+        //findRef(ref.value).get.next=None
+        headNode = ttt
+        length = length - rem
+        return value
+      } else if (ref.next == None && ref.prev == None) {
+        headNode = None
+        lastNode = None
+        length = length - rem
+        return value
+      }
+
+
+    }
+
+   /* if(count==0){
     if(findRefBefore(ref.value,ref).get.next!=None  && findRefBefore(ref.value,ref).get.prev!=None ){
       findRefBefore(ref.value,ref).get.next.get.prev=findRefBefore(ref.value,ref).get.prev
       findRefBefore(ref.value,ref).get.prev.get.next=findRefBefore(ref.value,ref).get.next
@@ -792,7 +841,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       return value
     }
 
-    }
+    }*/
     length=length-rem
     return value
 
@@ -818,16 +867,66 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     val rem:Int = n
     if (n>ref.count) {
       //"Throws"-->Cite: The Scala API
-      throw new IllegalArgumentException//I figured this out by experimenting with multiple different things
+      throw new IllegalArgumentException //I figured this out by experimenting with multiple different things
 
     }
 
+
+
+
+val value=ref.value
      var ttt=headNode.get.next
     var last=lastNode.get.prev
-    val px=findRefBefore(ref.value,ref)
-    findRefBefore(ref.value,ref).get.count = findRefBefore(ref.value,ref).get.count - n
+    val px=Some(ref)
+    ref.count = ref.count - n
 
-    if (findRefBefore(ref.value,ref).get.count == 0) {
+val count= ref.count
+    if (count == 0) {
+      if (ref.next != None && ref.prev != None) {
+        ref.next.get.prev = ref.prev
+        ref.prev.get.next = ref.next
+        px.get.prev = None
+        px.get.next = None
+
+        // findRef(ref.value).get.next=None
+        //findRef(ref.value).get.prev=None
+        length = length - rem
+        return value
+      } else if (ref.next == None && ref.prev != None) {
+        //lastNode=findRef(ref.value).get.prev
+        val yu = ref
+        ref.prev.get.next = None
+        yu.prev = None
+        //findRef(ref.value).get.prev=None
+
+        //findRef(ref.value).get.prev=None
+        lastNode = last
+        length = length - rem
+        return value
+      } else if (ref.next != None && ref.prev == None) {
+        //headNode=findRef(ref.value).get.next
+        val yu = ref
+        ref.next.get.prev = None
+        yu.next = None
+        //findRef(ref.value).get.next=None
+        headNode = ttt
+        length = length - rem
+        return value
+      } else if (ref.next == None && ref.prev == None) {
+        headNode = None
+        lastNode = None
+        length = length - rem
+        return value
+      }
+
+
+    }
+
+
+
+
+
+    /*if (findRefBefore(ref.value,ref).get.count == 0) {
       if (findRefBefore(ref.value,ref).get.next != None &&findRefBefore(ref.value,ref).get.prev != None) {
         findRefBefore(ref.value,ref).get.next.get.prev = findRefBefore(ref.value,ref).get.prev
         findRefBefore(ref.value,ref).get.prev.get.next = findRefBefore(ref.value,ref).get.next
@@ -863,7 +962,7 @@ yu.get.next=None
         return ref.value
       }
 
-    }
+    }*/
     length=length-rem
     return ref.value
 
@@ -880,11 +979,60 @@ yu.get.next=None
    */
   def removeAll(ref: SortedListNode[T]): T =
   {
-    val rem:Int = findRefBefore(ref.value,ref).get.count
-    findRefBefore(ref.value,ref).get.count = 0
+    val rem:Int = ref.count
+    ref.count = 0
     var ttt = headNode.get.next
     var last = lastNode.get.prev
-    val px=findRefBefore(ref.value,ref)
+    val px=Some(ref)
+val count= ref.count
+val value =ref.value
+
+    if (count == 0) {
+      if (ref.next != None && ref.prev != None) {
+        ref.next.get.prev = ref.prev
+        ref.prev.get.next = ref.next
+        px.get.prev = None
+        px.get.next = None
+
+        // findRef(ref.value).get.next=None
+        //findRef(ref.value).get.prev=None
+        length = length - rem
+        return value
+      } else if (ref.next == None && ref.prev != None) {
+        //lastNode=findRef(ref.value).get.prev
+        val yu = ref
+        ref.prev.get.next = None
+        yu.prev = None
+        //findRef(ref.value).get.prev=None
+
+        //findRef(ref.value).get.prev=None
+        lastNode = last
+        length = length - rem
+        return value
+      } else if (ref.next != None && ref.prev == None) {
+        //headNode=findRef(ref.value).get.next
+        val yu = ref
+        ref.next.get.prev = None
+        yu.next = None
+        //findRef(ref.value).get.next=None
+        headNode = ttt
+        length = length - rem
+        return value
+      } else if (ref.next == None && ref.prev == None) {
+        headNode = None
+        lastNode = None
+        length = length - rem
+        return value
+      }
+
+
+    }
+
+
+
+
+
+ /*
     if (findRefBefore(ref.value,ref).get.count == 0) {
       if (findRefBefore(ref.value,ref).get.next != None && findRefBefore(ref.value,ref).get.prev != None) {
         findRefBefore(ref.value,ref).get.next.get.prev = findRefBefore(ref.value,ref).get.prev
@@ -918,7 +1066,7 @@ yu.get.next=None
         return ref.value
       }
 
-    }
+    }*/
     length=length-rem
     return ref.value
   }
