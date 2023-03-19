@@ -378,14 +378,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     var tt=this
     var y=Some(tt).value.toList
 
-    while(i<length){
-      if(i==idx){
 
-      //return tt.get.value
-      }
-     // tt= this.headNode.get.next
-      i+=1
-    }
   return y(idx)
 
   }

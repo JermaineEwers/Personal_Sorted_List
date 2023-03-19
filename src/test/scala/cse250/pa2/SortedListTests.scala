@@ -456,6 +456,11 @@ println(Some(lisssst))
     //println(listt)
   }
 
+
+
+
+
+
   it should "be a  remove" in {
     val lists55 = new SortedList[Int]()
     lists55.insert(1)
