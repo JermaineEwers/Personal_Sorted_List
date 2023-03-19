@@ -213,7 +213,7 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
           if (compare(tt.get.value, elem) == 0) {
             // ch = ch + 1
             return tt
-          }else if (compare(elem, tt.get.value) < 0) {
+          }else if (compare(elem, tt.get.value) > 0) {
             return tt
           } else if (tt.get.next == None) {
             return tt
