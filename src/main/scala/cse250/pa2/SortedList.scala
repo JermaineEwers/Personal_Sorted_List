@@ -341,6 +341,13 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       throw new IndexOutOfBoundsException() //I figured this out by experimenting with  multiple different things
 
     }
+
+
+    if (idx == 0) {
+      return headNode.get
+    } else if (idx == length - 1) {
+      return lastNode.get
+    }
     var ret: SortedListNode[T] = headNode.get
     var t = headNode
 
@@ -398,7 +405,11 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
     }
     var t =headNode
     var ind = 0
-
+      if(idx==0){
+        return headNode.get.value
+      }else if (idx==length-1){
+        return lastNode.get.value
+      }
     while (t != None) {
       var p = 0
       while (p < t.get.count) {

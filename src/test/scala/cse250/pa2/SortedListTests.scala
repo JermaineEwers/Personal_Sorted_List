@@ -264,6 +264,17 @@ class SortedListTests extends AnyFlatSpec {
 
     println(Some(list).value.toList)
   assert(list.apply(4)==31)
+
+
+    val lists = new SortedList[Int]()
+    lists.insert(1)
+    lists.insert(2)
+    lists.insert(30)
+    lists.insert(30)
+    lists.insert(31)
+
+
+
   }
 
   it should "be a  insertion" in {
