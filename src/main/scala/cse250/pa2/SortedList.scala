@@ -358,12 +358,27 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       t = t.get.next
       num += 1
     }*/
+    var ind=0
 
-    ret
+    while(t!=None){
+      var p=0
+      while(p < t.get.count){
+        if(ind==idx){
+          return t.get
+        }
+        p+=1
+        ind+=1
+      }
+
+      t=t.get.next
+    }
+
+    /*var ttt = this.iterator
+    var yy=ttt.zipWithIndex
     var tt = this
-    var y = Some(tt).value.toList
+    var y = Some(tt).value*/
 
-    return findRef(y(idx)).get
+    return  headNode.get
   }
 
   /**
@@ -381,13 +396,28 @@ class SortedList[T: Ordering] extends mutable.Seq[T] {
       throw new IndexOutOfBoundsException() //I figured this out by experimenting with  multiple different things
 
     }
-    var i:Int=0
-    var tt=this
-    var y=Some(tt).value.toList
+    var t =headNode
+    var ind = 0
+
+    while (t != None) {
+      var p = 0
+      while (p < t.get.count) {
+        if (ind == idx) {
+          return t.get.value
+        }
+        p += 1
+        ind += 1
+      }
+
+      t = t.get.next
+    }
 
 
-  return y(idx)
 
+
+  // getRef(idx).value
+     //findRef(y(idx)).get
+    headNode.get.value
   }
 
   /**
